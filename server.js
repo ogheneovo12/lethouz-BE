@@ -18,11 +18,19 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // CONNECT DATABASE
-dbConnect();
+const mongoURI = process.env.DB_URI
+dbConnect(mongoURI);
+
+// INITIALIZE PASSPORT
+passport.initialize();
+require('./config/passport')(passport);
 
 // AUTH ROUTES
 app.use('/api/auth',require('./routes/auth'));
 
+app.get('/protected',passport.authenticate('jwt',{session: false}),(req,res)=>{
+  res.send('passed');
+})
 //SERVER LISTENING
 const PORT = process.env.PORT || 5000;
 app.listen(PORT,() => console.log(`server listening on port ${PORT}`))
