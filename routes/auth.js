@@ -5,6 +5,8 @@ const {registerValidator,loginValidator} = require('../middlewares/validateInput
 // EXPRESS ROUTER
 const router = express.Router();
 
-router.post('/register',registerValidator)
+router.post('/register',registerValidator,(req,res) => {
+  res.send('successful');
+})
 
 module.exports = router;
