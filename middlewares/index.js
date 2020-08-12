@@ -1,2 +1,8 @@
+const {registerValidator,loginValidator} = require('./validateInputs');
+const verifyNewUser = require('./verifyNewUser')
 
-exports.validateInputs = require('./validateInputs.js');
+module.exports = {
+  registerValidator,
+  loginValidator,
+  verifyNewUser
+};

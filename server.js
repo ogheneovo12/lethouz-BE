@@ -28,9 +28,17 @@ require('./config/passport')(passport);
 // AUTH ROUTES
 app.use('/api/auth',require('./routes/auth'));
 
-app.get('/protected',passport.authenticate('jwt',{session: false}),(req,res)=>{
-  res.send('passed');
+//custom passport middleware
+app.use('/protected', function(req, res, next) {
+  passport.authenticate('jwt', function(err, user) {
+    if (err || !user) next() 
+  })(req, res, next);
+});
+
+app.use((req,res,next) => {
+  res.send(404,'med o')
 })
+
 //SERVER LISTENING
 const PORT = process.env.PORT || 5000;
 app.listen(PORT,() => console.log(`server listening on port ${PORT}`))
