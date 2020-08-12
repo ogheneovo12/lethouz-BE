@@ -53,3 +53,23 @@ exports.registerValidator = function (req,res,next){
   if (!isEmpty(errors)) return res.send(400,errors);
   next();
 }
+
+
+exports.loginValidator = function (req,res,next){
+  const errors = {};
+  const data = req.body;
+
+  data.email = !isEmpty(data.email) ? data.email : "";
+  data.password = !isEmpty(data.password) ? data.password : "";
+
+  if(validator.isEmpty(data.email) || !validator.isEmail(data.email)){
+    errors.email = "Incorrect Email";
+  }
+
+  if(validator.isEmpty(data.password)){
+    errors.password = "password is required";
+  }
+  
+  if (!isEmpty(errors)) return res.send(400,errors);
+  next();
+}
