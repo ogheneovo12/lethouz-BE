@@ -2,7 +2,6 @@
 const express = require('express');
 const {registerValidator,loginValidator,verifyNewUser} = require('../middlewares');
 
-
 // EXPRESS ROUTER
 const router = express.Router();
 

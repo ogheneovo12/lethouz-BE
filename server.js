@@ -18,10 +18,26 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // CONNECT DATABASE
-dbConnect();
+const mongoURI = process.env.DB_URI
+dbConnect(mongoURI);
+
+// INITIALIZE PASSPORT
+passport.initialize();
+require('./config/passport')(passport);
 
 // AUTH ROUTES
 app.use('/api/auth',require('./routes/auth'));
+
+//custom passport middleware
+app.use('/protected', function(req, res, next) {
+  passport.authenticate('jwt', function(err, user) {
+    if (err || !user) next() 
+  })(req, res, next);
+});
+
+app.use((req,res,next) => {
+  res.send(404,'med o')
+})
 
 //SERVER LISTENING
 const PORT = process.env.PORT || 5000;
