@@ -36,7 +36,7 @@ app.use('/protected', function(req, res, next) {
 });
 
 app.use((req,res,next) => {
-  res.send(404,'med o')
+  res.status(404).send(404,'med o')
 })
 
 //SERVER LISTENING
