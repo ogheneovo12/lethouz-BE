@@ -1,22 +1,22 @@
 const bcrypt = require('bcryptjs');
-
 const { User } = require('../models');
-const hashFunction = require('../utils/passwordHash.js');
+const { hashPassword, generateToken} = require('../helpers/utils.js');
 
+// hash password -> save user -> generate token -> send token
 exports.signupUser = (req,res) => {
-  let {firstName,lastName,email,password} = req.body;
+  const {firstName,lastName,email,password} = req.body;
 
-  password = hashFunction(password);
-  console.log(password);
+  hashPassword(password).then( hash => {
+    const newUser = new User({ firstName, lastName, email, password: hash });
 
-  // const user = new User({
-  //   firstName,
-  //   lastName,
-  //   email,
-  //   password
-  // })
-
-  res.send('user');
-  
-
+    newUser.save()
+      .then(user => {
+        console.log(generateToken(user));
+      })
+      .catch( err => res.status(500).json({
+        err,
+        SERVER_ERROR: 'failed to save user'
+      }))
+  })
+  .catch( err => console.log(err))
 }

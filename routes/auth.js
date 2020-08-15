@@ -6,7 +6,7 @@ const {signupUser} = require('../controllers/auth')
 // EXPRESS ROUTER
 const router = express.Router();
 
-router.post('/register',registerValidator,verifyNewUser, signupUser)
+router.post('/register',registerValidator, signupUser)
 
 router.post('/login',loginValidator)
 
