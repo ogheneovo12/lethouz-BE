@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const { User } = require('../models');
-const { hashPassword, generateToken} = require('../helpers/utils.js');
+const { hashPassword, generateToken} = require('../utils/utils.js');
 
 // hash password -> save user -> generate token -> send token
 exports.signupUser = (req,res) => {

@@ -6,8 +6,6 @@ const { SECRET_KEY } = process.env;
 
 exports.hashPassword = password => new Promise((resolve,reject) => {
   bcrypt.hash(password,10)
-  .then(hash => resolve(hash))
-  .catch(err => reject('Error '+err))
 })
 
 
