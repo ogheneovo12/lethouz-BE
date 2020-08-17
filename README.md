@@ -8,8 +8,7 @@ A location based real estate solution
 ### **POST** /auth/register - register a new user
 
   ##### Request
-  ```
-  
+  ``` 
   {
     "firstName": String,
     "lastName": String,
@@ -17,14 +16,11 @@ A location based real estate solution
     "password": String,
     "confirmPassword": String,
   }
-
   ```
   ##### Response
-  ```
-  
+  ``` 
   {
     "token": String
   }
-
   ```
 
