@@ -11,7 +11,7 @@ const isEmpty = require('is-empty');
  * @desc validates user inputs. sends errors and stops current endpoint work if any.
  */
 
-exports.registerValidator = function (req,res,next){
+export function registerValidator (req,res,next){
   const errors = {};
   const data = req.body;
 
@@ -55,7 +55,7 @@ exports.registerValidator = function (req,res,next){
 }
 
 
-exports.loginValidator = function (req,res,next){
+export function loginValidator(req,res,next){
   const errors = {};
   const data = req.body;
 

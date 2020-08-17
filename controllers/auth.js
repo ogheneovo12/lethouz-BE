@@ -1,22 +1,101 @@
-const bcrypt = require('bcryptjs');
-const { User } = require('../models');
-const { hashPassword, generateToken} = require('../utils/utils.js');
+import { User } from '../models';
+import { hashPassword, generateJwtToken } from '../utils/utils';
 
-// hash password -> save user -> generate token -> send token
-exports.signupUser = (req,res) => {
-  const {firstName,lastName,email,password} = req.body;
+export default class AuthController {
+  static registerUser(req, res, next) {
+    Promise.resolve()
+      .then(createNewUser)
+      .then(genPasswordHash)
+      .then(attachPasswordHash)
+      .then(saveUserDetails)
+      .then(sendToken) 
+      .catch(next);
 
-  hashPassword(password).then( hash => {
-    const newUser = new User({ firstName, lastName, email, password: hash });
+    function createNewUser() {
+      const {firstName, lastName, email} = req.body;
+      return new User({
+        firstName,
+        lastName,
+        email
+      });
+    }
 
-    newUser.save()
-      .then(user => {
-        console.log(generateToken(user));
-      })
-      .catch( err => res.status(500).json({
-        err,
-        SERVER_ERROR: 'failed to save user'
-      }))
-  })
-  .catch( err => console.log(err))
+    function genPasswordHash(user) {
+      return Promise.all([
+        Promise.resolve(user),
+       hashPassword(req.body.password)
+      ]);
+    }
+
+    function attachPasswordHash([user, hash]) {
+      user.password = hash;
+      return user
+    }
+
+    function saveUserDetails(user) {
+      return Promise.all([
+        user.save(),
+        generateJwtToken({
+          id: user._id
+        })
+      ])
+    }
+
+
+    function sendToken([r,token]) {
+      console.log(r);
+      res.status(200).json({
+        token
+      });
+    } 
+  }
+
+  // static loginAdmin(req, res, next) {
+  //   getAdmin()
+  //     .then(checkIfAdminExists)
+  //     .then(comparePassword)
+  //     .then(abortIfPasswordMismatch)
+  //     .then(generateAdminToken)
+  //     .then(sendResponse)
+  //     .catch(next);
+
+  //   function getAdmin() {
+  //     return Admin.findOne({
+  //       username: req.body.username
+  //     });
+  //   }
+
+  //   function checkIfAdminExists(admin) {
+  //     if (!admin) 
+  //       throw createError(404, 'Account was not found');
+  //     return admin;
+  //   }
+
+  //   function comparePassword(admin) {
+  //     return Promise.all([
+  //       Promise.resolve(admin),
+  //       bcrypt.compare(req.body.password, admin.password)
+  //     ]);
+  //   }
+
+  //   function abortIfPasswordMismatch([admin, status]) {
+  //     if (!status)
+  //       throw createError(403, 'The password doesn\'t match');
+  //     return admin;
+  //   }
+
+  //   function generateAdminToken(admin) {
+  //     return generateJwtToken({
+  //       id: admin._id,
+  //     }, '7d');
+  //   }
+
+  //   function sendResponse(token) {
+  //     res.status(200).json({
+  //       status: 200,
+  //       message: 'Admin logged in',
+  //       data: [{ token }]
+  //     });
+  //   }
+  // }
 }

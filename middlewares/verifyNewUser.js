@@ -1,7 +1,9 @@
-const { User }= require('../models')
+import { User } from '../models';
 
-module.exports = function (req,res,next) {
+function checkEmail (req,res,next) {
+
   User.findOne({email: req.body.email},(err,user) => {
+    
     if (err) return res.status(500).send("Internal Server Error");
 
     if (user) return res.status(400).send({
@@ -10,4 +12,7 @@ module.exports = function (req,res,next) {
 
     next();
   })
+
 }
+
+export default checkEmail;
