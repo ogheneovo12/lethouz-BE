@@ -9,23 +9,22 @@ A location based real estate solution
 
   ##### Request
   ```
-
+  
   {
     "firstName": String,
     "lastName": String,
     "email": String,
     "password": String,
     "confirmPassword": String,
-    }
+  }
 
   ```
-
   ##### Response
   ```
-
+  
   {
     "token": String
-    }
+  }
 
   ```
 
