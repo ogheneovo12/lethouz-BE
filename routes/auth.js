@@ -1,16 +1,11 @@
-// IMPORT MODULES
-const express = require('express');
-const {registerValidator,loginValidator,verifyNewUser} = require('../middlewares');
+import { Router } from "express";
+import {registerValidator, loginValidator, verifyNewUser}  from "../middlewares";
+import AuthController from "../controllers/auth";
 
-// EXPRESS ROUTER
-const router = express.Router();
+const router = Router();
 
-router.post('/register',registerValidator,verifyNewUser,(req,res) => {
-  res.send('successful');
-})
+router.post('/register',registerValidator, verifyNewUser, AuthController.registerUser);
 
-router.post('/login',loginValidator,(req,res) => {
-  res.send('successful');
-})
+router.post('/login',loginValidator);
 
-module.exports = router;
+export default router;
