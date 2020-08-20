@@ -50,52 +50,29 @@ export default class AuthController {
     } 
   }
 
-  // static loginAdmin(req, res, next) {
-  //   getAdmin()
-  //     .then(checkIfAdminExists)
-  //     .then(comparePassword)
-  //     .then(abortIfPasswordMismatch)
-  //     .then(generateAdminToken)
-  //     .then(sendResponse)
-  //     .catch(next);
+  static loginUser(req, res, next) {
+    Promise.resolve()
+      .then(getDbCredentials)
+      //.then(comparePassword)
+      // .then(sendResponse)
+      // .then(endOnPasswordMismatch)
+      .catch(next)
 
-  //   function getAdmin() {
-  //     return Admin.findOne({
-  //       username: req.body.username
-  //     });
-  //   }
+    function getDbCredentials() {
+      return User.findOne({email: req.body.email})
+    }
 
-  //   function checkIfAdminExists(admin) {
-  //     if (!admin) 
-  //       throw createError(404, 'Account was not found');
-  //     return admin;
-  //   }
+    function comparePassword(user) {
+      return
+    }
 
-  //   function comparePassword(admin) {
-  //     return Promise.all([
-  //       Promise.resolve(admin),
-  //       bcrypt.compare(req.body.password, admin.password)
-  //     ]);
-  //   }
 
-  //   function abortIfPasswordMismatch([admin, status]) {
-  //     if (!status)
-  //       throw createError(403, 'The password doesn\'t match');
-  //     return admin;
-  //   }
-
-  //   function generateAdminToken(admin) {
-  //     return generateJwtToken({
-  //       id: admin._id,
-  //     }, '7d');
-  //   }
-
-  //   function sendResponse(token) {
-  //     res.status(200).json({
-  //       status: 200,
-  //       message: 'Admin logged in',
-  //       data: [{ token }]
-  //     });
-  //   }
-  // }
+    function sendResponse(token) {
+      res.status(200).json({
+        status: 200,
+        message: 'Admin logged in',
+        data: [{ token }]
+      });
+    }
+  }
 }

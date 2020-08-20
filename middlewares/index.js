@@ -1,8 +1,9 @@
 import {registerValidator,loginValidator} from "./validateInputs";
-import verifyNewUser from'./verifyNewUser';
+import { verifyNewUser, verifyOldUser } from'./verifyUser';
 
 module.exports = {
   registerValidator,
   loginValidator,
-  verifyNewUser
+  verifyNewUser,
+  verifyOldUser
 };
