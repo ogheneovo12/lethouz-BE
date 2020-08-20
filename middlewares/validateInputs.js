@@ -70,6 +70,6 @@ export function loginValidator(req,res,next){
     errors.password = "password is required";
   }
   
-  if (!isEmpty(errors)) return res.send(400,errors);
+  if (!isEmpty(errors)) return res.status(400).json(errors);
   next();
 }

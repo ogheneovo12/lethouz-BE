@@ -1,5 +1,5 @@
 import { User } from '../models';
-import { hashPassword, generateJwtToken } from '../utils/utils';
+import { hashPassword, sessionizeUser, verifyPassword ,createError} from '../utils/utils';
 
 export default class AuthController {
   static registerUser(req, res, next) {
@@ -35,67 +35,52 @@ export default class AuthController {
     function saveUserDetails(user) {
       return Promise.all([
         user.save(),
-        generateJwtToken({
-          id: user._id
+        sessionizeUser({
+          email : user.email
         })
       ])
     }
 
 
-    function sendToken([r,token]) {
-      console.log(r);
-      res.status(200).json({
-        token
+    function sendToken([r,session]) {
+      req.session.email = session.email
+      res.send({
+        message: 'user has successfully registered'
       });
     } 
   }
 
-  // static loginAdmin(req, res, next) {
-  //   getAdmin()
-  //     .then(checkIfAdminExists)
-  //     .then(comparePassword)
-  //     .then(abortIfPasswordMismatch)
-  //     .then(generateAdminToken)
-  //     .then(sendResponse)
-  //     .catch(next);
+  static loginUser(req, res, next) {
+    Promise.resolve()
+      .then(getDbCredentials)
+      .then(comparePassword)
+      .then(endOnPasswordMismatch)
+      .then(sendResponse)
+      .catch(next)
 
-  //   function getAdmin() {
-  //     return Admin.findOne({
-  //       username: req.body.username
-  //     });
-  //   }
+    function getDbCredentials() {
+      return User.findOne({email: req.body.email});
+    }
 
-  //   function checkIfAdminExists(admin) {
-  //     if (!admin) 
-  //       throw createError(404, 'Account was not found');
-  //     return admin;
-  //   }
+    function comparePassword(user) {
+      return Promise.all([
+        verifyPassword(req.body.password,user.password),
+        Promise.resolve(user.email)
+      ]);
+    }
 
-  //   function comparePassword(admin) {
-  //     return Promise.all([
-  //       Promise.resolve(admin),
-  //       bcrypt.compare(req.body.password, admin.password)
-  //     ]);
-  //   }
+    function endOnPasswordMismatch([status,email]){
+      if (!status) {
+        throw createError(400,'Incorrect Password');
+      }
+      return email;
+    }
 
-  //   function abortIfPasswordMismatch([admin, status]) {
-  //     if (!status)
-  //       throw createError(403, 'The password doesn\'t match');
-  //     return admin;
-  //   }
-
-  //   function generateAdminToken(admin) {
-  //     return generateJwtToken({
-  //       id: admin._id,
-  //     }, '7d');
-  //   }
-
-  //   function sendResponse(token) {
-  //     res.status(200).json({
-  //       status: 200,
-  //       message: 'Admin logged in',
-  //       data: [{ token }]
-  //     });
-  //   }
-  // }
+    function sendResponse(email) {
+      req.session.email = email;
+      res.status(200).json({
+        message: 'You have successfully logged in',
+      });
+    }
+  }
 }
