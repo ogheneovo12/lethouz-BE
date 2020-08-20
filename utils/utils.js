@@ -15,9 +15,8 @@ export function hashPassword(string){
   return bcrypt.hash(string, 10)
 }
 
-export function generateJwtToken(payload) {
-  return Promise.resolve(jwt.sign(payload, secretKey, { expiresIn: '7d' }));
+export function sessionizeUser({ email }) {
+  return Promise.resolve( { email } );
 }
-
 
 

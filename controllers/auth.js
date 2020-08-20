@@ -1,5 +1,5 @@
 import { User } from '../models';
-import { hashPassword, generateJwtToken } from '../utils/utils';
+import { hashPassword, sessionizeUser } from '../utils/utils';
 
 export default class AuthController {
   static registerUser(req, res, next) {
@@ -35,17 +35,17 @@ export default class AuthController {
     function saveUserDetails(user) {
       return Promise.all([
         user.save(),
-        generateJwtToken({
-          id: user._id
+        sessionizeUser({
+          email : user.email
         })
       ])
     }
 
 
-    function sendToken([r,token]) {
-      console.log(r);
-      res.status(200).json({
-        token
+    function sendToken([r,session]) {
+      req.session.email = session.email
+      res.send({
+        message: 'user has successfully registered'
       });
     } 
   }
