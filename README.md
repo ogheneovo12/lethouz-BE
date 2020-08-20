@@ -20,7 +20,22 @@ A location based real estate solution
   ##### Response
   ``` 
   {
-    "token": String
+    "message": String
+  }
+  ```
+### **POST** /auth/login - log previous user in
+
+  ##### Request
+  ```
+  {
+    "email": String,
+    "password": String
+  }
+  ```
+  ##### Response
+  ```
+  {
+    "message": String
   }
   ```
 
