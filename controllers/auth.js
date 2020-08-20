@@ -1,5 +1,5 @@
 import { User } from '../models';
-import { hashPassword, sessionizeUser } from '../utils/utils';
+import { hashPassword, sessionizeUser, verifyPassword ,createError} from '../utils/utils';
 
 export default class AuthController {
   static registerUser(req, res, next) {
@@ -53,25 +53,33 @@ export default class AuthController {
   static loginUser(req, res, next) {
     Promise.resolve()
       .then(getDbCredentials)
-      //.then(comparePassword)
-      // .then(sendResponse)
-      // .then(endOnPasswordMismatch)
+      .then(comparePassword)
+      .then(endOnPasswordMismatch)
+      .then(sendResponse)
       .catch(next)
 
     function getDbCredentials() {
-      return User.findOne({email: req.body.email})
+      return User.findOne({email: req.body.email});
     }
 
     function comparePassword(user) {
-      return
+      return Promise.all([
+        verifyPassword(req.body.password,user.password),
+        Promise.resolve(user.email)
+      ]);
     }
 
+    function endOnPasswordMismatch([status,email]){
+      if (!status) {
+        throw createError(400,'Incorrect Password');
+      }
+      return email;
+    }
 
-    function sendResponse(token) {
+    function sendResponse(email) {
+      req.session.email = email;
       res.status(200).json({
-        status: 200,
-        message: 'Admin logged in',
-        data: [{ token }]
+        message: 'You have successfully logged in',
       });
     }
   }

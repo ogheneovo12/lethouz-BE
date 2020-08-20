@@ -44,9 +44,8 @@ export default function loadRoutes(app, c) {
       res.status(404).send('route not found');
      })
 
-    app.use((error,req, res, next) => {
-    console.error(error.stack);
-    res.status(error.status).send(error.message);
+    app.use(({status,message},req, res, next) => {
+    res.status(status).json({message});
     })
 
     resolve();
