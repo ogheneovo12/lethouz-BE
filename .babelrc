@@ -5,7 +5,7 @@
       "@babel/plugin-transform-runtime",
       {
         "regenerator": true,
-        "useESModules": true
+        "useESModules": false
       }
     ]
   ]
