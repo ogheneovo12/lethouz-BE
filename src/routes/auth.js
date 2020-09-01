@@ -33,4 +33,11 @@ router.get(
   }
 );
 
+// failed
+router.get("/failed", (req, res) => {
+  res.json({
+    message: "Authentication Fail",
+  });
+});
+
 export default router;
