@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node build/server.js",
     "dev": "nodemon --exec babel-node --experimental-modules src/server.js",
-    "build": "rm -rf build && babel src --out-dir build"
+    "build": "node -v && rm -rf build && babel src --out-dir build"
   },
   "repository": {
     "type": "git",
