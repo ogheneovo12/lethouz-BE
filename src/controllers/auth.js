@@ -1,5 +1,10 @@
-import { User } from '../models';
-import { hashPassword, sessionizeUser, verifyPassword ,createError} from '../utils/utils';
+import { User } from "../models";
+import {
+  hashPassword,
+  sessionizeUser,
+  verifyPassword,
+  createError,
+} from "../utils/utils";
 
 export default class AuthController {
   static registerUser(req, res, next) {
@@ -8,46 +13,50 @@ export default class AuthController {
       .then(genPasswordHash)
       .then(attachPasswordHash)
       .then(saveUserDetails)
-      .then(sendToken) 
-      .catch(next);
+      .then(sendToken)
+      .catch(() =>
+        next({
+          status: 500,
+          message: "server failure :( ",
+        })
+      );
 
     function createNewUser() {
-      const {firstName, lastName, email} = req.body;
+      const { firstName, lastName, email } = req.body;
       return new User({
         firstName,
         lastName,
-        email
+        email,
       });
     }
 
     function genPasswordHash(user) {
       return Promise.all([
         Promise.resolve(user),
-       hashPassword(req.body.password)
+        hashPassword(req.body.password),
       ]);
     }
 
     function attachPasswordHash([user, hash]) {
       user.password = hash;
-      return user
+      return user;
     }
 
     function saveUserDetails(user) {
       return Promise.all([
         user.save(),
         sessionizeUser({
-          email : user.email
-        })
-      ])
+          email: user.email,
+        }),
+      ]);
     }
 
-
-    function sendToken([r,session]) {
-      req.session.email = session.email
+    function sendToken([_, session]) {
+      req.session.email = session.email;
       res.send({
-        message: 'user has successfully registered'
+        message: "user has successfully registered",
       });
-    } 
+    }
   }
 
   static loginUser(req, res, next) {
@@ -56,22 +65,22 @@ export default class AuthController {
       .then(comparePassword)
       .then(endOnPasswordMismatch)
       .then(sendResponse)
-      .catch(next)
+      .catch(next);
 
     function getDbCredentials() {
-      return User.findOne({email: req.body.email});
+      return User.findOne({ email: req.body.email });
     }
 
     function comparePassword(user) {
       return Promise.all([
-        verifyPassword(req.body.password,user.password),
-        Promise.resolve(user.email)
+        verifyPassword(req.body.password, user.password),
+        Promise.resolve(user.email),
       ]);
     }
 
-    function endOnPasswordMismatch([status,email]){
+    function endOnPasswordMismatch([status, email]) {
       if (!status) {
-        throw createError(400,'Incorrect Password');
+        throw createError(400, "Incorrect Password");
       }
       return email;
     }
@@ -79,7 +88,7 @@ export default class AuthController {
     function sendResponse(email) {
       req.session.email = email;
       res.status(200).json({
-        message: 'You have successfully logged in',
+        message: "You have successfully logged in",
       });
     }
   }

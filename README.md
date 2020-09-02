@@ -30,6 +30,8 @@ A location based real estate solution
 
 ### **POST** /auth/login - log previous user in
 
+#### returns a cookie
+
 ##### Request
 
 ```

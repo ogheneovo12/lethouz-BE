@@ -1,16 +1,17 @@
 import { Router } from "express";
 import authRoutes from "./auth";
+import { verifyForeignUser } from "../middlewares";
 
 const apiRouter = Router();
 
-apiRouter.get('/',(req,res)=>{
+// welcome route
+apiRouter.get("/", (req, res) => {
+  console.log(req.session);
   res.json({
-    mesage: 'welcome to the api route'
-  })
-})
+    mesage: "welcome to the api route",
+  });
+});
 
-apiRouter.use('/auth',authRoutes);
-
-
+apiRouter.use("/auth", verifyForeignUser, authRoutes);
 
 export default apiRouter;

@@ -1,8 +1,8 @@
-import * as config from "../config";
 import express from "express";
-import dbConnect from "./db.connect";
-import routeLoader from "./routes";
-import passportLoader from "./passport";
+import dbConnect from "./db.loader";
+import routeLoader from "./routes.loader";
+import passportLoader from "./passport.loader";
+import * as config from "../config";
 const app = express();
 
 /**
