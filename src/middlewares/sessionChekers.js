@@ -1,4 +1,5 @@
 export function verifyForeignUser(req, res, next) {
+  if (req.url == "/logout") return next();
   if (req.session.email)
     return next({
       status: 401,

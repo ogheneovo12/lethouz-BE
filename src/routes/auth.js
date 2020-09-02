@@ -36,6 +36,14 @@ authRouter.get(
   }
 );
 
+// logout route
+authRouter.post("/logout", (req, res) => {
+  req.session.destroy();
+  res.send({
+    message: "you're now logged out",
+  });
+});
+
 // failed
 authRouter.get("/failed", (req, res) => {
   res.json({
