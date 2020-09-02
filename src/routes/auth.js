@@ -23,7 +23,7 @@ authRouter.post(
 // OAuth for Google
 authRouter.get(
   "/google",
-  passport.authenticate("google", { scope: ["profile"] })
+  passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
 authRouter.get(

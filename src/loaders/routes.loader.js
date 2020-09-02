@@ -1,5 +1,6 @@
 import cors from "cors";
 import session from "express-session";
+import passport from "passport";
 import connectStore from "connect-mongo";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
@@ -39,6 +40,9 @@ export default function loadRoutes(app, c) {
         }),
       })
     );
+
+    app.use(passport.initialize());
+    app.use(passport.session());
 
     // M
     app.use("/api", apiRoutes);

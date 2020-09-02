@@ -11,15 +11,27 @@ const UserSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    unique: true,
     required: true,
   },
   password: {
     type: String,
-    required: true,
+    required: false,
   },
   priviledges: {
     type: String,
     default: "regular-user",
+  },
+  savedApartments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      //ref: "Apartment",
+    },
+  ],
+  profileImage: {
+    type: String,
+    required: false,
+    default: null,
   },
   joined: {
     type: Date,
