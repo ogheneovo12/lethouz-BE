@@ -15,10 +15,7 @@ export default class AuthController {
       .then(saveUserDetails)
       .then(sendToken)
       .catch(() =>
-        next({
-          status: 500,
-          message: "server failure :( ",
-        })
+        next([500, ["server failed to process request"], "server failure :( "])
       );
 
     function createNewUser() {
@@ -54,6 +51,8 @@ export default class AuthController {
     function sendToken([_, session]) {
       req.session.email = session.email;
       res.send({
+        data: null,
+        error: null,
         message: "user has successfully registered",
       });
     }

@@ -49,14 +49,15 @@ export default function loadRoutes(app, c) {
 
     // error handling routes
     app.use((req, res, next) => {
-      next({
-        status: 404,
-        message: "requested resource not found",
-      });
+      next([404, ["requested resource not found"], "Bad Reuest"]);
     });
 
-    app.use(({ status, message }, req, res, next) => {
-      res.status(status).json({ message });
+    app.use(([status, error, message], req, res, next) => {
+      res.status(status).json({
+        data: null,
+        error,
+        message,
+      });
     });
 
     // resolve promise
