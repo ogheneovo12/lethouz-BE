@@ -51,8 +51,8 @@ export default class AuthController {
     function sendToken([_, session]) {
       req.session.email = session.email;
       res.send({
-        data: null,
-        error: null,
+        data: {},
+        errors: null,
         message: "user has successfully registered",
       });
     }

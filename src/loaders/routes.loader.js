@@ -18,7 +18,12 @@ const MongoStore = connectStore(session);
 export default function loadRoutes(app, c) {
   return new Promise((resolve, reject) => {
     // cors and body parser setup
-    app.use(cors());
+    app.use(
+      cors({
+        credentials: true,
+        origin: "localhost:3000",
+      })
+    );
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
@@ -52,10 +57,10 @@ export default function loadRoutes(app, c) {
       next([404, ["requested resource not found"], "Bad Reuest"]);
     });
 
-    app.use(([status, error, message], req, res, next) => {
+    app.use(([status, errors, message], req, res, next) => {
       res.status(status).json({
         data: null,
-        error,
+        errors,
         message,
       });
     });
