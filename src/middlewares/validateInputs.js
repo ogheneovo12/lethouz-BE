@@ -52,7 +52,8 @@ export function registerValidator(req, res, next) {
     errors.passwordsMismatch = "Passwords must match";
   }
 
-  if (!isEmpty(errors)) return next({ status: 400, message: errors });
+  if (!isEmpty(errors))
+    return next({ status: 400, errors, message: "registration failed" });
   next();
 }
 
@@ -71,6 +72,7 @@ export function loginValidator(req, res, next) {
     errors.password = "password is required";
   }
 
-  if (!isEmpty(errors)) return res.status(400).json(errors);
+  if (!isEmpty(errors))
+    return next({ status: 400, errors, message: "login failed" });
   next();
 }

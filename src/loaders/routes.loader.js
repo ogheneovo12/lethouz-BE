@@ -37,7 +37,7 @@ export default function loadRoutes(app, c) {
         cookie: {
           sameSite: true,
           secure: process.env.NODE_ENV === "production",
-          maxAge: 1000 * 60 * 60 * 7,
+          maxAge: 1000 * 60 * 60 * 3,
         },
         store: new MongoStore({
           mongooseConnection: mongoose.connection,
@@ -49,15 +49,18 @@ export default function loadRoutes(app, c) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    // M
     app.use("/api", apiRoutes);
 
     // error handling routes
     app.use((req, res, next) => {
-      next([404, ["requested resource not found"], "Bad Reuest"]);
+      next({
+        status: 404,
+        errors: ["requested resource not found"],
+        message: "Bad Reuest",
+      });
     });
 
-    app.use(([status, errors, message], req, res, next) => {
+    app.use(({ status, errors, message }, req, res, next) => {
       res.status(status).json({
         data: null,
         errors,

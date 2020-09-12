@@ -4,12 +4,18 @@ import { createError } from "../utils/utils";
 export function verifyNewUser(req, res, next) {
   User.findOne({ email: req.body.email }, (err, user) => {
     if (err)
-      return next(
-        createError(500, "Oops ! server failed to resond, please try again")
-      );
+      return next({
+        status: 500,
+        errors: ["server failed to respond :( "],
+        message: "registration failed",
+      });
 
     if (user)
-      return next(createError(400, `email ${req.body.email} already exists`));
+      return next({
+        status: 400,
+        errors: ["email already exists"],
+        message: "registration failed",
+      });
 
     next();
   });
@@ -18,12 +24,18 @@ export function verifyNewUser(req, res, next) {
 export function verifyOldUser(req, res, next) {
   User.findOne({ email: req.body.email }, (err, user) => {
     if (err)
-      return next(
-        createError(500, "Oops ! server failed to resond, please try again")
-      );
+      return next({
+        status: 500,
+        errors: ["server failed to respond :("],
+        message: "authentication failed",
+      });
 
     if (user) return next();
 
-    next(createError(400, `email ${req.body.email} not found`));
+    return next({
+      status: 400,
+      errors: ["invalid login credentials"],
+      message: "authentication failed",
+    });
   });
 }
