@@ -19,6 +19,6 @@ apiRouter.use(
   authRoutes
 );
 // apiRouter.use("/user", userRoutes);
-// apiRouter.use("/apartment",apartmentRoutes)
+apiRouter.use("/apartment", apartmentRoutes);
 
 export default apiRouter;

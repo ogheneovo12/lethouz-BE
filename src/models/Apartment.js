@@ -28,21 +28,21 @@ const AddressSchema = new Schema({
     type: String,
     required: true,
   },
-  locality: {
-    type: String,
-    required: true,
-  },
+  // locality: {
+  //   type: String,
+  //   required: true,
+  // },
   address: {
     type: String,
     required: true,
   },
   lat: {
     type: String,
-    required: true,
+    required: false,
   },
   long: {
     type: String,
-    required: true,
+    required: false,
   },
 });
 
