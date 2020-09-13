@@ -14,9 +14,7 @@ export default class AuthController {
       .then(attachPasswordHash)
       .then(saveUserDetails)
       .then(sendToken)
-      .catch(() =>
-        next([500, ["server failed to process request"], "server failure :( "])
-      );
+      .catch(next);
 
     function createNewUser() {
       const { firstName, lastName, email } = req.body;
@@ -73,21 +71,23 @@ export default class AuthController {
     function comparePassword(user) {
       return Promise.all([
         verifyPassword(req.body.password, user.password),
-        Promise.resolve(user.email),
+        Promise.resolve(user),
       ]);
     }
 
-    function endOnPasswordMismatch([status, email]) {
+    function endOnPasswordMismatch([status, user]) {
       if (!status) {
         throw createError(400, "Incorrect Password");
       }
-      return email;
+      return user;
     }
 
-    function sendResponse(email) {
-      req.session.email = email;
+    function sendResponse(user) {
+      req.session.email = user.email;
       res.status(200).json({
-        message: "You have successfully logged in",
+         errors:null,
+         data:user,
+         message: "You have successfully logged in",
       });
     }
   }

@@ -1,6 +1,6 @@
 import cors from "cors";
 import session from "express-session";
-import passport from "passport";
+//import passport from "passport";
 import connectStore from "connect-mongo";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
@@ -46,23 +46,23 @@ export default function loadRoutes(app, c) {
       })
     );
 
-    app.use(passport.initialize());
-    app.use(passport.session());
+    // app.use(passport.initialize());
+    // app.use(passport.session());
 
     // M
     app.use("/api", apiRoutes);
 
     // error handling routes
     app.use((req, res, next) => {
-      next([404, ["requested resource not found"], "Bad Reuest"]);
+      res.status(404).json({error:true, message: "not found" });
     });
 
-    app.use(([status, errors, message], req, res, next) => {
-      res.status(status).json({
-        data: null,
-        errors,
-        message,
-      });
+    app.use((error, req, res, next) => {
+      res.status(error.status || 500)
+      .json({ 
+        error:error.error || ["server failed to process request"], 
+        data:null,
+        message: error.message || "server failure :( " });
     });
 
     // resolve promise

@@ -20,3 +20,4 @@ export function sessionizeUser({ email }) {
 export function verifyPassword(password, hash) {
   return bcrypt.compare(password, hash);
 }
+
