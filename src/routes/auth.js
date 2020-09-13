@@ -28,39 +28,37 @@ authRouter.get(
 
 authRouter.get(
   "/google/callback",
-  passport.authenticate("google", {
-    failureRedirect: "localhost:5000/api/auth/failed",
-  }),
+  passport.authenticate("google"),
   (req, res) => {
-    res.redirect("/api");
+    res.send(req.user);
   }
 );
 
-// logout route
-authRouter.post("/logout", (req, res) => {
-  req.session.destroy();
-  res.send({
-    message: "you're now logged out",
-  });
-});
+// // logout route
+// authRouter.post("/logout", (req, res) => {
+//   req.session.destroy();
+//   res.send({
+//     message: "you're now logged out",
+//   });
+// });
 
-// failed
-authRouter.get("/failed", (req, res) => {
-  res.json({
-    message: "Authentication Fail",
-  });
-});
+// // failed
+// authRouter.get("/failed", (req, res) => {
+//   res.json({
+//     message: "Authentication Fail",
+//   });
+// });
 
-// dummy markup for test
-authRouter.get("/login", (req, res) => {
-  res.send(`
-    <form action="/api/auth/login" method="POST">
-      <input type="email" name="email" placeholder="email" required>
-      <input type="password" name="password" placeholder="password" required>
-      <input type="submit" value="Submit">
-    </form>
-  `);
-});
+// // dummy markup for test
+// authRouter.get("/login", (req, res) => {
+//   res.send(`
+//     <form action="/api/auth/login" method="POST">
+//       <input type="email" name="email" placeholder="email" required>
+//       <input type="password" name="password" placeholder="password" required>
+//       <input type="submit" value="Submit">
+//     </form>
+//   `);
+// });
 
 authRouter.get("/register", (req, res) => {
   res.send(`

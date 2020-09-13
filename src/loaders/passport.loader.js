@@ -1,51 +1,31 @@
 import passport from "passport";
-import { Strategy } from "passport-google-oauth20";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { User } from "../models";
 
 export default function loader(app, config) {
   return new Promise((resolve) => {
     passport.use(
-      new Strategy(
+      new GoogleStrategy(
         {
           clientID: config.googleID,
           clientSecret: config.googleSecret,
           callbackURL: "/api/auth/google/callback",
         },
-        (accessToken, refreshToken, profile, done) => {
-          // steps [ extract user and arrange user, check if user exists, if user doesn't exist create user, send done]
-          Promise.resolve()
-            .then(extractDetails)
-            .then(checkIfUserExists)
-            .then(createIfNotExists)
-            .send(sendResponse)
-            .catch((err) => done(err, null));
-
-          function extractDetails() {
-            const person = profile._json;
-            const details = {
-              firstName: person.given_name,
-              lastName: person.family_name,
-              email: person.email,
-              profileImage: person.picture,
-            };
-            return Promise.resolve(details);
-          }
-          function checkIfUserExists(user) {
-            console.log("send 1 response");
-            return Promise.all([
-              User.find({ email: user.email }),
-              Promise.resolve(user),
-            ]);
-          }
-          function createIfNotExists([exists, user]) {
-            console.log("send 2 response");
-            if (exists) return Promise.resolve(user);
-
-            return User.create(user);
-          }
-          function sendResponse(user) {
-            console.log("send 3 response");
-            return done(null, user);
+        async (accessToken, refreshToken, profile, done) => {
+          try {
+            const oldUser = await User.findOne({
+              email: profile.emails[0].value,
+            });
+            if (oldUser) return done(null, oldUser);
+            const newUser = await User.create({
+              firstName: profile.name.givenName,
+              lastName: profile.name.familyName,
+              email: profile.emails[0].value,
+              profileImage: profile.photos[0].value,
+            });
+            if (newUser) return done(null, newUser);
+          } catch (err) {
+            console.log("access token: ", accessToken);
           }
         }
       )
@@ -54,13 +34,10 @@ export default function loader(app, config) {
       done(null, user.id);
     });
     passport.deserializeUser((id, done) => {
-      console.log(id, done);
+      User.findById(id).then((user) => {
+        done(null, user);
+      });
     });
-
     resolve();
   });
-}
-
-function extractUserFromPayload(params) {
-  return;
 }

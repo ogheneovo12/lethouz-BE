@@ -3,10 +3,7 @@ const jwt = require("jsonwebtoken");
 import { secretKey } from "../config";
 
 export function createError(status, message) {
-  return {
-    status,
-    message,
-  };
+  return [status, errors, message];
 }
 
 export function hashPassword(string) {
