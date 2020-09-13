@@ -1,10 +1,5 @@
 import { User } from "../models";
-import {
-  hashPassword,
-  sessionizeUser,
-  verifyPassword,
-  createError,
-} from "../utils/utils";
+import { hashPassword, verifyPassword, createError } from "../utils/utils";
 
 export default class AuthController {
   static registerUser(req, res, next) {
@@ -13,18 +8,22 @@ export default class AuthController {
       .then(genPasswordHash)
       .then(attachPasswordHash)
       .then(saveUserDetails)
-      .then(sendToken)
+      .then(sendCookie)
       .catch(() =>
-        next([500, ["server failed to process request"], "server failure :( "])
+        next({
+          status: 500,
+          errors: { request: "server failed to respond :(" },
+          message: "registration failed",
+        })
       );
 
     function createNewUser() {
       const { firstName, lastName, email } = req.body;
-      return new User({
+      return {
         firstName,
         lastName,
         email,
-      });
+      };
     }
 
     function genPasswordHash(user) {
@@ -40,20 +39,18 @@ export default class AuthController {
     }
 
     function saveUserDetails(user) {
-      return Promise.all([
-        user.save(),
-        sessionizeUser({
-          email: user.email,
-        }),
-      ]);
+      return User.create(user);
     }
 
-    function sendToken([_, session]) {
-      req.session.email = session.email;
+    function sendCookie(user) {
+      req.session.user = user._id;
+      let data = { ...user._doc };
+      delete data.password;
+
       res.send({
-        data: {},
+        data,
         errors: null,
-        message: "user has successfully registered",
+        message: "registration success",
       });
     }
   }
@@ -64,29 +61,38 @@ export default class AuthController {
       .then(comparePassword)
       .then(endOnPasswordMismatch)
       .then(sendResponse)
-      .catch(next);
+      .catch((request) => {
+        next({
+          data: null,
+          errors: { request },
+          message: "login failed",
+        });
+      });
 
     function getDbCredentials() {
-      return User.findOne({ email: req.body.email });
+      return User.findOne({ email: req.body.email }).select("+password");
     }
 
     function comparePassword(user) {
+      if (!user) return Promise.reject("invalid login credentials");
       return Promise.all([
         verifyPassword(req.body.password, user.password),
-        Promise.resolve(user.email),
+        Promise.resolve(user),
       ]);
     }
 
-    function endOnPasswordMismatch([status, email]) {
-      if (!status) {
-        throw createError(400, "Incorrect Password");
-      }
-      return email;
+    function endOnPasswordMismatch([status, user]) {
+      if (!status) return Promise.reject("invalid login credentials");
+      return Promise.resolve(email);
     }
 
-    function sendResponse(email) {
-      req.session.email = email;
-      res.status(200).json({
+    function sendResponse(user) {
+      req.session.user = user._id;
+      let data = { ...user._doc };
+      delete data.password;
+      res.json({
+        data,
+        errors: null,
         message: "You have successfully logged in",
       });
     }

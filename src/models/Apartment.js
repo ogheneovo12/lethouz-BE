@@ -52,6 +52,11 @@ const ApartmentSchema = new Schema(
       type: String,
       required: true,
     },
+    posted_by: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     purpose: {
       type: String,
       required: true,

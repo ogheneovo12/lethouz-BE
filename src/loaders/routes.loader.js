@@ -55,7 +55,9 @@ export default function loadRoutes(app, c) {
     app.use((req, res, next) => {
       next({
         status: 404,
-        errors: ["requested resource not found"],
+        errors: {
+          request: "requested resource not found",
+        },
         message: "Bad Reuest",
       });
     });
