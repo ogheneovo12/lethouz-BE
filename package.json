@@ -4,10 +4,10 @@
   "description": "A decentralized location based real estate service",
   "main": "server.js",
   "scripts": {
-    "start": "node build/server.js",
-    "dev": "nodemon --exec babel-node --experimental-modules src/server.js",
+    "start": "cross-env NODE_ENV=production node build/server.js",
+    "dev": "cross-env NODE_ENV=development nodemon --exec babel-node --experimental-modules src/server.js",
     "test-build": "npm run build && npm start",
-    "build": "node -v && rm -rf build && babel src --out-dir build"
+    "build": "rm -rf build && babel src --out-dir build"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
     "concurrently": "^5.3.0",
     "connect-mongo": "^3.2.0",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
