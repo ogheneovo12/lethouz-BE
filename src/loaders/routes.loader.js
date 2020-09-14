@@ -21,7 +21,10 @@ export default function loadRoutes(app, c) {
     app.use(
       cors({
         credentials: true,
-        origin: "localhost:3000",
+        origin:
+          process.env.NODE_ENV == "development"
+            ? "http://localhost:3000"
+            : "https://lethouz.netlify.app",
       })
     );
     app.use(bodyParser.urlencoded({ extended: false }));
