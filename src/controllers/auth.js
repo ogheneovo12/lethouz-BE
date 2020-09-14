@@ -1,10 +1,5 @@
 import { User } from "../models";
-import {
-  hashPassword,
-  sessionizeUser,
-  verifyPassword,
-  createError,
-} from "../utils/utils";
+import { hashPassword, verifyPassword, createError } from "../utils/utils";
 
 export default class AuthController {
   static registerUser(req, res, next) {
@@ -13,16 +8,27 @@ export default class AuthController {
       .then(genPasswordHash)
       .then(attachPasswordHash)
       .then(saveUserDetails)
+<<<<<<< HEAD
       .then(sendToken)
       .catch(next);
+=======
+      .then(sendCookie)
+      .catch(() =>
+        next({
+          status: 500,
+          errors: { request: "server failed to respond :(" },
+          message: "registration failed",
+        })
+      );
+>>>>>>> f14a6d93db07c66921f76ff958a14dcce0069226
 
     function createNewUser() {
       const { firstName, lastName, email } = req.body;
-      return new User({
+      return {
         firstName,
         lastName,
         email,
-      });
+      };
     }
 
     function genPasswordHash(user) {
@@ -38,20 +44,18 @@ export default class AuthController {
     }
 
     function saveUserDetails(user) {
-      return Promise.all([
-        user.save(),
-        sessionizeUser({
-          email: user.email,
-        }),
-      ]);
+      return User.create(user);
     }
 
-    function sendToken([_, session]) {
-      req.session.email = session.email;
+    function sendCookie(user) {
+      req.session.user = user._id;
+      let data = { ...user._doc };
+      delete data.password;
+
       res.send({
-        data: {},
+        data,
         errors: null,
-        message: "user has successfully registered",
+        message: "registration success",
       });
     }
   }
@@ -62,13 +66,20 @@ export default class AuthController {
       .then(comparePassword)
       .then(endOnPasswordMismatch)
       .then(sendResponse)
-      .catch(next);
+      .catch((request) => {
+        next({
+          data: null,
+          errors: { request },
+          message: "login failed",
+        });
+      });
 
     function getDbCredentials() {
-      return User.findOne({ email: req.body.email });
+      return User.findOne({ email: req.body.email }).select("+password");
     }
 
     function comparePassword(user) {
+      if (!user) return Promise.reject("invalid login credentials");
       return Promise.all([
         verifyPassword(req.body.password, user.password),
         Promise.resolve(user),
@@ -76,6 +87,7 @@ export default class AuthController {
     }
 
     function endOnPasswordMismatch([status, user]) {
+<<<<<<< HEAD
       if (!status) {
         throw createError(400, "Incorrect Password");
       }
@@ -88,6 +100,20 @@ export default class AuthController {
          errors:null,
          data:user,
          message: "You have successfully logged in",
+=======
+      if (!status) return Promise.reject("invalid login credentials");
+      return Promise.resolve(email);
+    }
+
+    function sendResponse(user) {
+      req.session.user = user._id;
+      let data = { ...user._doc };
+      delete data.password;
+      res.json({
+        data,
+        errors: null,
+        message: "You have successfully logged in",
+>>>>>>> f14a6d93db07c66921f76ff958a14dcce0069226
       });
     }
   }

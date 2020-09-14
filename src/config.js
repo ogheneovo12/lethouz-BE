@@ -10,7 +10,7 @@ const {
   GOOGLE_CLIENT_SECRET,
 } = process.env;
 
-export const port = process.env.PORT || 8080;
+export const port = process.env.PORT || 9000;
 
 export const secretKey = SECRET_KEY ||"secret";
 

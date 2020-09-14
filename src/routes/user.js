@@ -1,21 +1,23 @@
 import { Router } from "express";
-import * as _ from "../middlewares";
-import userController from "../controllers/user";
-import passport, { use } from "passport";
+import UsersController from "../controllers/user";
+import { updateProfileValidator } from "../middlewares/validateInputs";
 
 const userRouter = Router();
 
 // get user details
-userRouter.get("/", userController.show);
+userRouter.get("/", UsersController.showUser);
 
-// get saved apartments
-userRouter.get("/saved", userController.getSavedItems);
+//get saved apartments
+userRouter.get("/saved", UsersController.getSaved);
+
+//update profile
+userRouter.put("/", updateProfileValidator, UsersController.update);
 
 // save/unsave apartment
-userRouter.post("/saved", userController.toggleSaved);
+userRouter.put("/saved", UsersController.toggleSaved);
 
 //get user apartments
-userRouter.get("/apartment", userController.getApartments);
+userRouter.get("/apartment", UsersController.getApartments);
 
 //
 

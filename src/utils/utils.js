@@ -10,10 +10,6 @@ export function hashPassword(string) {
   return bcrypt.hash(string, 10);
 }
 
-export function sessionizeUser({ email }) {
-  return Promise.resolve({ email });
-}
-
 export function verifyPassword(password, hash) {
   return bcrypt.compare(password, hash);
 }

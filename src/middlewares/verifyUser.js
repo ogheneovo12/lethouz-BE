@@ -1,41 +1,40 @@
 import { User } from "../models";
 import { createError } from "../utils/utils";
 
-export function verifyNewUser(req, res, next) {
-  User.findOne({ email: req.body.email }, (err, user) => {
-    if (err)
-      return next({
-        status: 500,
-        errors: ["server failed to respond :( "],
-        message: "registration failed",
-      });
-
-    if (user)
+export async function verifyNewUser(req, res, next) {
+  try {
+    const exists = await User.findOne({ email: req.body.email });
+    if (exists)
       return next({
         status: 400,
-        errors: ["email already exists"],
+        errors: { email: "email already exists" },
         message: "registration failed",
       });
-
     next();
-  });
+  } catch (err) {
+    return next({
+      status: 500,
+      errors: { request: "server failed to respond :(" },
+      message: "registration failed",
+    });
+  }
 }
 
-export function verifyOldUser(req, res, next) {
-  User.findOne({ email: req.body.email }, (err, user) => {
-    if (err)
+export async function verifyOldUser(req, res, next) {
+  try {
+    const exists = await User.findOne({ email: req.body.email });
+    if (!exists)
       return next({
-        status: 500,
-        errors: ["server failed to respond :("],
-        message: "authentication failed",
+        status: 400,
+        errors: { request: "invalid login credentials" },
+        message: "login failed",
       });
-
-    if (user) return next();
-
+    next();
+  } catch (err) {
     return next({
-      status: 400,
-      errors: ["invalid login credentials"],
-      message: "authentication failed",
+      status: 500,
+      errors: { request: "server failed to respond :(" },
+      message: "login failed",
     });
-  });
+  }
 }
