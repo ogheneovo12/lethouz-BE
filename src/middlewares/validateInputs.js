@@ -13,14 +13,14 @@ const isEmpty = require("is-empty");
 
 export function registerValidator(req, res, next) {
   const errors = {};
-  const data = req.body;
+  const data = {};
 
-  data.firstName = !isEmpty(data.firstName) ? data.firstName : "";
-  data.lastName = !isEmpty(data.lastName) ? data.lastName : "";
-  data.email = !isEmpty(data.email) ? data.email : "";
-  data.password = !isEmpty(data.password) ? data.password : "";
-  data.confirmPassword = !isEmpty(data.confirmPassword)
-    ? data.confirmPassword
+  data.firstName = !isEmpty(req.body.firstName) ? req.body.firstName : "";
+  data.lastName = !isEmpty(req.body.lastName) ? req.body.lastName : "";
+  data.email = !isEmpty(req.body.email) ? req.body.email : "";
+  data.password = !isEmpty(req.body.password) ? req.body.password : "";
+  data.confirmPassword = !isEmpty(req.body.confirmPassword)
+    ? req.body.confirmPassword
     : "";
 
   // VALIDATION RULES
@@ -61,19 +61,18 @@ export function loginValidator(req, res, next) {
   const errors = {};
   const data = {};
 
-  data.email = !isEmpty(data.email) ? data.email : "";
-  data.password = !isEmpty(data.password) ? data.password : "";
+  data.email = !isEmpty(req.body.email) ? req.body.email : "";
+  data.password = !isEmpty(req.body.password) ? req.body.password : "";
 
   if (validator.isEmpty(data.email) || !validator.isEmail(data.email)) {
     errors.email = "Invalid login credentials";
   }
-
   if (validator.isEmpty(data.password)) {
     errors.password = "invalid login credentials";
   }
-
   if (!isEmpty(errors))
     return next({ status: 400, errors, message: "login failed" });
+  req.body = sanitize(data);
   next();
 }
 
@@ -102,6 +101,72 @@ export function updateProfileValidator(req, res, next) {
     return next({ status: 400, errors, message: "profile update failed" });
   req.body = sanitize(data);
   next();
+}
+
+export function createApartmentValidator(req, res, next) {
+  const { body } = req;
+  const errors = {};
+  const data = {};
+
+  data.title = !isEmpty(body.title) ? body.title : "";
+  data.purpose = !isEmpty(body.purpose) ? body.purpose : "";
+  data.type = !isEmpty(body.type) ? body.type : "";
+  // data.details = !isEmpty(body.details) ? body.details : "";
+  // data.location = !isEmpty(body.location) ? body.location : "";
+
+  if (validator.isEmpty(data.title)) {
+    errors.title = "Invalid title";
+  }
+  if (validator.isEmpty(data.purpose) || !validator.isAlpha(data.purpose)) {
+    errors.purpose = "Invalid purpose";
+  }
+  if (validator.isEmpty(data.type) || !validator.isAlpha(data.type)) {
+    errors.type = "Invalid type";
+  }
+  if (!body.details) {
+    errors.details = "house details required";
+  } else {
+    const invalid = [
+      body.details.bedrooms,
+      body.details.bathrooms,
+      body.details.toilets,
+      body.details.size,
+    ].some((prop) => prop == "" || !validator.isInt(prop));
+    if (invalid) {
+      errors.details = "invalid house details";
+    } else {
+      const { bedrooms, bathrooms, toilets, size } = body.details;
+      data.details = { bedrooms, bathrooms, toilets, size };
+    }
+  }
+  if (!body.location) {
+    errors.location = "house location required";
+  } else {
+    const invalid = [
+      body.location.lga,
+      body.location.state,
+      body.location.address,
+    ].some((prop) => prop == "");
+    if (invalid) {
+      errors.location = "invalid house location";
+    } else {
+      const { lga, state, address } = body.location;
+      data.location = { lga, state, address };
+    }
+  }
+  console.log(req.files);
+  if (!isEmpty(errors))
+    return next({ status: 400, errors, message: "create apartment" });
+  data.details = sanitize(data.details);
+  data.location = sanitize(data.location);
+  const others = sanitize({
+    title: data.title,
+    purpose: data.purpose,
+    type: data.type,
+  });
+  req.body = { ...others, details: data.details, location: data.location };
+
+  //next();
 }
 
 function sanitize(data) {

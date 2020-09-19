@@ -7,11 +7,11 @@ const userRouter = Router();
 // get user details
 userRouter.get("/", UsersController.showUser);
 
-//get saved apartments
-userRouter.get("/saved", UsersController.getSaved);
-
 //update profile
 userRouter.put("/", updateProfileValidator, UsersController.update);
+
+//get saved apartments
+userRouter.get("/saved", UsersController.getSaved);
 
 // save/unsave apartment
 userRouter.put("/saved", UsersController.toggleSaved);
