@@ -1,9 +1,15 @@
 import { Router } from "express";
 import ApartmentController from "../controllers/apartment";
-import { Apartment } from "../models";
+
+import { createApartmentValidator } from "../middlewares/validateInputs";
 const apartmentRouter = Router();
 
-apartmentRouter.post("/", ApartmentController.create);
+apartmentRouter.post(
+  "/",
+  //verifySeller,
+  createApartmentValidator,
+  ApartmentController.create
+);
 
 apartmentRouter.get("/", ApartmentController.search);
 

@@ -28,10 +28,6 @@ const AddressSchema = new Schema({
     type: String,
     required: true,
   },
-  // locality: {
-  //   type: String,
-  //   required: true,
-  // },
   address: {
     type: String,
     required: true,
@@ -71,6 +67,10 @@ const ApartmentSchema = new Schema(
     },
     location: {
       type: AddressSchema,
+      required: true,
+    },
+    attachments: {
+      type: String,
       required: true,
     },
   },

@@ -1,5 +1,4 @@
 import { User } from "../models";
-import { createError } from "../utils/utils";
 
 export async function verifyNewUser(req, res, next) {
   try {
@@ -35,6 +34,21 @@ export async function verifyOldUser(req, res, next) {
       status: 500,
       errors: { request: "server failed to respond :(" },
       message: "login failed",
+    });
+  }
+}
+
+export function verifySeller(req, res, next) {
+  try {
+    console.log("med o", req.session);
+    //const isSeller
+  } catch (err) {
+    next({
+      status: 500,
+      errors: {
+        request: "server failed to respond",
+      },
+      message: "request failed",
     });
   }
 }

@@ -8,7 +8,6 @@ const apiRouter = Router();
 
 // welcome route
 apiRouter.get("/", (req, res) => {
-  console.log(req.session);
   res.json({
     mesage: "welcome to the api route",
   });

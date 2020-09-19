@@ -13,14 +13,14 @@ const isEmpty = require("is-empty");
 
 export function registerValidator(req, res, next) {
   const errors = {};
-  const data = req.body;
+  const data = {};
 
-  data.firstName = !isEmpty(data.firstName) ? data.firstName : "";
-  data.lastName = !isEmpty(data.lastName) ? data.lastName : "";
-  data.email = !isEmpty(data.email) ? data.email : "";
-  data.password = !isEmpty(data.password) ? data.password : "";
-  data.confirmPassword = !isEmpty(data.confirmPassword)
-    ? data.confirmPassword
+  data.firstName = !isEmpty(req.body.firstName) ? req.body.firstName : "";
+  data.lastName = !isEmpty(req.body.lastName) ? req.body.lastName : "";
+  data.email = !isEmpty(req.body.email) ? req.body.email : "";
+  data.password = !isEmpty(req.body.password) ? req.body.password : "";
+  data.confirmPassword = !isEmpty(req.body.confirmPassword)
+    ? req.body.confirmPassword
     : "";
 
   // VALIDATION RULES
@@ -61,23 +61,49 @@ export function loginValidator(req, res, next) {
   const errors = {};
   const data = {};
 
-  data.email = !isEmpty(data.email) ? data.email : "";
-  data.password = !isEmpty(data.password) ? data.password : "";
+  data.email = !isEmpty(req.body.email) ? req.body.email : "";
+  data.password = !isEmpty(req.body.password) ? req.body.password : "";
 
   if (validator.isEmpty(data.email) || !validator.isEmail(data.email)) {
     errors.email = "Invalid login credentials";
   }
-
   if (validator.isEmpty(data.password)) {
     errors.password = "invalid login credentials";
   }
-
   if (!isEmpty(errors))
     return next({ status: 400, errors, message: "login failed" });
+  req.body = sanitize(data);
   next();
 }
 
 export function updateProfileValidator(req, res, next) {
+  const errors = {};
+  const data = {};
+
+  data.firstName = !isEmpty(req.body.firstName) ? req.body.firstName : "";
+  data.lastName = !isEmpty(req.body.lastName) ? req.body.lastName : "";
+  data.profileImage = !isEmpty(req.body.profileImage)
+    ? req.body.profileImage
+    : "";
+  data.profileVideo = !isEmpty(req.body.profleVideo)
+    ? req.body.profileVideo
+    : "";
+  if (validator.isEmpty(data.firstName) || !validator.isAlpha(data.firstName)) {
+    errors.firstName = "Invalid first name";
+  }
+  if (validator.isEmpty(data.lastName) || !validator.isAlpha(data.lastName)) {
+    errors.lastName = "invalid last name";
+  }
+  // if (validator.isEmpty(data.profileImage)) {
+  //   errors.photo = "profile photo required";
+  // }
+  if (!isEmpty(errors))
+    return next({ status: 400, errors, message: "profile update failed" });
+  req.body = sanitize(data);
+  next();
+}
+
+export function createApartmentValidator(req, res, next) {
   const errors = {};
   const data = {};
 

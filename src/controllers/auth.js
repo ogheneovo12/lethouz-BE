@@ -62,6 +62,7 @@ export default class AuthController {
       .then(endOnPasswordMismatch)
       .then(sendResponse)
       .catch((request) => {
+        console.log(request);
         next({
           data: null,
           errors: { request },
@@ -70,7 +71,9 @@ export default class AuthController {
       });
 
     function getDbCredentials() {
-      return User.findOne({ email: req.body.email }).select("+password");
+      return User.findOne({ email: req.body.email }).select(
+        "+password -savedApartments"
+      );
     }
 
     function comparePassword(user) {
@@ -83,7 +86,7 @@ export default class AuthController {
 
     function endOnPasswordMismatch([status, user]) {
       if (!status) return Promise.reject("invalid login credentials");
-      return Promise.resolve(email);
+      return Promise.resolve(user);
     }
 
     function sendResponse(user) {
@@ -93,8 +96,17 @@ export default class AuthController {
       res.json({
         data,
         errors: null,
-        message: "You have successfully logged in",
+        message: "Welcome back agba boss :)",
       });
     }
+  }
+
+  static logout(req, res, next) {
+    req.session.destroy();
+    res.json({
+      data: null,
+      errors: null,
+      message: "sorry to see you go :(",
+    });
   }
 }
