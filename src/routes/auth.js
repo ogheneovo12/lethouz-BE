@@ -35,7 +35,7 @@ authRouter.get(
   "/google/callback",
   passport.authenticate("google"),
   (req, res) => {
-    res.send(req.user);
+    res.redirect("http:localhost:3000");
   }
 );
 

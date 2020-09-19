@@ -5,7 +5,7 @@ import {
 } from "./validateInputs";
 import getCoordinates from "./apartment";
 import { verifyNewUser, verifyOldUser, verifySeller } from "./verifyUser";
-import { verifyForeignUser } from "./sessionChekers";
+import { verifyForeignUser, verifyUser } from "./sessionChekers";
 
 export {
   registerValidator,
@@ -16,4 +16,5 @@ export {
   verifySeller,
   verifyOldUser,
   verifyForeignUser,
+  verifyUser,
 };
