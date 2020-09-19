@@ -71,7 +71,7 @@ const ApartmentSchema = new Schema(
     },
     attachments: {
       type: [{ type: String }],
-      required: false,
+      required: true,
     },
     published: {
       type: Number,
