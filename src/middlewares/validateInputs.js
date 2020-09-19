@@ -154,6 +154,7 @@ export function createApartmentValidator(req, res, next) {
       data.location = { lga, state, address };
     }
   }
+  console.log(req.files);
   if (!isEmpty(errors))
     return next({ status: 400, errors, message: "create apartment" });
   data.details = sanitize(data.details);
@@ -164,7 +165,8 @@ export function createApartmentValidator(req, res, next) {
     type: data.type,
   });
   req.body = { ...others, details: data.details, location: data.location };
-  next();
+
+  //next();
 }
 
 function sanitize(data) {

@@ -3,6 +3,7 @@ import session from "express-session";
 import passport from "passport";
 import connectStore from "connect-mongo";
 import bodyParser from "body-parser";
+import fileUpload from "express-fileupload";
 import mongoose from "mongoose";
 import apiRoutes from "../routes";
 import * as config from "../config";
@@ -29,7 +30,7 @@ export default function loadRoutes(app, c) {
     );
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
-
+    app.use(fileUpload());
     // session configuration
     app.use(
       session({
