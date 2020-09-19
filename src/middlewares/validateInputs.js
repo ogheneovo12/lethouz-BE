@@ -104,29 +104,66 @@ export function updateProfileValidator(req, res, next) {
 }
 
 export function createApartmentValidator(req, res, next) {
+  const { body } = req;
   const errors = {};
   const data = {};
 
-  data.firstName = !isEmpty(req.body.firstName) ? req.body.firstName : "";
-  data.lastName = !isEmpty(req.body.lastName) ? req.body.lastName : "";
-  data.profileImage = !isEmpty(req.body.profileImage)
-    ? req.body.profileImage
-    : "";
-  data.profileVideo = !isEmpty(req.body.profleVideo)
-    ? req.body.profileVideo
-    : "";
-  if (validator.isEmpty(data.firstName) || !validator.isAlpha(data.firstName)) {
-    errors.firstName = "Invalid first name";
+  data.title = !isEmpty(body.title) ? body.title : "";
+  data.purpose = !isEmpty(body.purpose) ? body.purpose : "";
+  data.type = !isEmpty(body.type) ? body.type : "";
+  // data.details = !isEmpty(body.details) ? body.details : "";
+  // data.location = !isEmpty(body.location) ? body.location : "";
+
+  if (validator.isEmpty(data.title)) {
+    errors.title = "Invalid title";
   }
-  if (validator.isEmpty(data.lastName) || !validator.isAlpha(data.lastName)) {
-    errors.lastName = "invalid last name";
+  if (validator.isEmpty(data.purpose) || !validator.isAlpha(data.purpose)) {
+    errors.purpose = "Invalid purpose";
   }
-  // if (validator.isEmpty(data.profileImage)) {
-  //   errors.photo = "profile photo required";
-  // }
+  if (validator.isEmpty(data.type) || !validator.isAlpha(data.type)) {
+    errors.type = "Invalid type";
+  }
+  if (!body.details) {
+    errors.details = "house details required";
+  } else {
+    const invalid = [
+      body.details.bedrooms,
+      body.details.bathrooms,
+      body.details.toilets,
+      body.details.size,
+    ].some((prop) => prop == "" || !validator.isInt(prop));
+    if (invalid) {
+      errors.details = "invalid house details";
+    } else {
+      const { bedrooms, bathrooms, toilets, size } = body.details;
+      data.details = { bedrooms, bathrooms, toilets, size };
+    }
+  }
+  if (!body.location) {
+    errors.location = "house location required";
+  } else {
+    const invalid = [
+      body.location.lga,
+      body.location.state,
+      body.location.address,
+    ].some((prop) => prop == "");
+    if (invalid) {
+      errors.location = "invalid house location";
+    } else {
+      const { lga, state, address } = body.location;
+      data.location = { lga, state, address };
+    }
+  }
   if (!isEmpty(errors))
-    return next({ status: 400, errors, message: "profile update failed" });
-  req.body = sanitize(data);
+    return next({ status: 400, errors, message: "create apartment" });
+  data.details = sanitize(data.details);
+  data.location = sanitize(data.location);
+  const others = sanitize({
+    title: data.title,
+    purpose: data.purpose,
+    type: data.type,
+  });
+  req.body = { ...others, details: data.details, location: data.location };
   next();
 }
 

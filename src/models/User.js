@@ -19,9 +19,9 @@ const UserSchema = new Schema(
       required: false,
       select: false,
     },
-    priviledges: {
-      type: String,
-      default: "regular-user",
+    isSeller: {
+      type: Number,
+      default: 0,
     },
     profileImage: String,
     profileVideo: String,

@@ -38,10 +38,11 @@ export async function verifyOldUser(req, res, next) {
   }
 }
 
-export function verifySeller(req, res, next) {
+export async function verifySeller(req, res, next) {
   try {
-    console.log("med o", req.session);
-    //const isSeller
+    const isUser = await User.findOne({ _id: req.session.user, isSeller: 1 });
+    req.body.published = Number(isUser);
+    next();
   } catch (err) {
     next({
       status: 500,

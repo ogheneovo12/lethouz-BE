@@ -15,6 +15,6 @@ apiRouter.get("/", (req, res) => {
 
 apiRouter.use("/auth", verifyForeignUser, authRoutes);
 apiRouter.use("/user", userRoutes);
-//apiRouter.use("/apartment", apartmentRoutes);
+apiRouter.use("/apartment", apartmentRoutes);
 
 export default apiRouter;

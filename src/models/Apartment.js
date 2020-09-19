@@ -34,11 +34,11 @@ const AddressSchema = new Schema({
   },
   lat: {
     type: String,
-    required: false,
+    required: true,
   },
-  long: {
+  lng: {
     type: String,
-    required: false,
+    required: true,
   },
 });
 
@@ -70,7 +70,11 @@ const ApartmentSchema = new Schema(
       required: true,
     },
     attachments: {
-      type: String,
+      type: [{ type: String }],
+      required: false,
+    },
+    published: {
+      type: Number,
       required: true,
     },
   },
