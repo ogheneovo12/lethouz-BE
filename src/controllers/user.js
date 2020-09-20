@@ -1,6 +1,5 @@
 import { User, Apartment } from "../models";
-import { json } from "body-parser";
-
+import { hashPassword, verifyPassword } from "../utils/utils";
 class UsersController {
   static async showUser(req, res, next) {
     try {
@@ -43,6 +42,40 @@ class UsersController {
         status: 500,
         errors: { request: "server failed to respond" },
         message: "unable to find user",
+      });
+    }
+  }
+
+  static async updatePassword(req, res, next) {
+    try {
+      const user = await User.findById(req.session.user).select("+password");
+      const correctPassword = await verifyPassword(
+        req.body.password,
+        user.password
+      );
+      if (!correctPassword)
+        return next({
+          status: 400,
+          errors: {
+            password: "incorect current password",
+          },
+        });
+      const newHash = await hashPassword(req.body.newPassword);
+      user.password = newHash;
+      if (await user.save())
+        res.send({
+          data: user,
+          errors: null,
+          message: "password has been changed successfully",
+        });
+    } catch (error) {
+      console.log(error);
+      return next({
+        status: 500,
+        errors: {
+          request: "server failed to respond",
+        },
+        message: "update password failure",
       });
     }
   }

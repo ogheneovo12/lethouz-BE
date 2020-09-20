@@ -67,10 +67,11 @@ export default class AuthController {
       .then(endOnPasswordMismatch)
       .then(sendResponse)
       .catch((request) => {
-        console.log(request);
-        next({
-          data: null,
-          errors: { request },
+        res.json({
+          status: 400,
+          errors: {
+            request: "incorrect login credentials / means of logging in ",
+          },
           message: "login failed",
         });
       });
@@ -82,7 +83,7 @@ export default class AuthController {
     }
 
     function comparePassword(user) {
-      if (!user) return Promise.reject("invalid login credentials");
+      if (!user || !user.password) throw new Error("invalid login credentials");
       return Promise.all([
         verifyPassword(req.body.password, user.password),
         Promise.resolve(user),

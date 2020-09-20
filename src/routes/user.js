@@ -10,6 +10,9 @@ userRouter.get("/", UsersController.showUser);
 //update profile
 userRouter.put("/", updateProfileValidator, UsersController.update);
 
+//update profile
+userRouter.put("/password", UsersController.updatePassword);
+
 //get saved apartments
 userRouter.get("/saved", UsersController.getSaved);
 
@@ -18,7 +21,5 @@ userRouter.put("/saved", UsersController.toggleSaved);
 
 //get user apartments
 userRouter.get("/apartment", UsersController.getApartments);
-
-//
 
 export default userRouter;

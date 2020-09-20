@@ -7,3 +7,22 @@ export function verifyForeignUser(req, res, next) {
     });
   return next();
 }
+
+export async function verifyUser(req, res, next) {
+  const { user, passport } = req.session;
+  if (!user && !passport)
+    return next({
+      status: 401,
+      errors: {
+        request: "invalid credentials",
+      },
+      message: "unauthoried request",
+    });
+  if (passport && !user) {
+    req.session.user = passport.user;
+    return next();
+  }
+  if (user && !passport) {
+    return next();
+  }
+}
