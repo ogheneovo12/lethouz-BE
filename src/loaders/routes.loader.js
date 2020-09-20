@@ -58,7 +58,7 @@ export default function loadRoutes(app, c) {
       })
     );
 
-     app.use(passport.initialize());
+    app.use(passport.initialize());
     app.use(passport.session());
 
     app.use("/api", apiRoutes);

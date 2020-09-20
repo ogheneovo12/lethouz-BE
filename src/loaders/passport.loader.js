@@ -27,6 +27,7 @@ export default function loader(app, config) {
             });
             if (newUser) return done(null, newUser);
           } catch (err) {
+            console.log(err)
             console.log("access token: ", accessToken);
           }
         }
