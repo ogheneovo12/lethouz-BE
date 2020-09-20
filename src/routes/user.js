@@ -1,6 +1,9 @@
 import { Router } from "express";
 import UsersController from "../controllers/user";
-import { updateProfileValidator } from "../middlewares/validateInputs";
+import {
+  updateProfileValidator,
+  passwordResetValidator,
+} from "../middlewares/validateInputs";
 
 const userRouter = Router();
 
@@ -10,8 +13,12 @@ userRouter.get("/", UsersController.showUser);
 //update profile
 userRouter.put("/", updateProfileValidator, UsersController.update);
 
-//update profile
-userRouter.put("/password", UsersController.updatePassword);
+//reset password
+userRouter.put(
+  "/password",
+  passwordResetValidator,
+  UsersController.updatePassword
+);
 
 //get saved apartments
 userRouter.get("/saved", UsersController.getSaved);

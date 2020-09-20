@@ -175,3 +175,27 @@ function sanitize(data) {
   }
   return data;
 }
+
+export function passwordResetValidator(req, res, next) {
+  const errors = {};
+  const data = {};
+  data.currentPassword = req.body.currentPassword
+    ? req.body.currentPassword
+    : "";
+  data.newPassword = req.body.newPassword ? req.body.newPassword : "";
+  data.confirmPassword = req.body.confirmPassword
+    ? req.body.confirmPassword
+    : "";
+  if (isEmpty(data.newPassword) || data.newPassword != data.confirmPassword) {
+    return next({
+      status: 400,
+      errors: {
+        password:
+          "new password and confirm password must be equal non empty values",
+      },
+      message: "failed to reset password",
+    });
+  }
+  req.body = sanitize(data);
+  next();
+}

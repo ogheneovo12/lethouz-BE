@@ -1,6 +1,6 @@
 ## TODOS
 
-- Password reset.
+- Password reset.(done)
 - File uploads
 - Find an apartment
 - user update
