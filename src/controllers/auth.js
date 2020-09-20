@@ -8,10 +8,6 @@ export default class AuthController {
       .then(genPasswordHash)
       .then(attachPasswordHash)
       .then(saveUserDetails)
-<<<<<<< HEAD
-      .then(sendToken)
-      .catch(next);
-=======
       .then(sendCookie)
       .catch(() =>
         next({
@@ -20,7 +16,6 @@ export default class AuthController {
           message: "registration failed",
         })
       );
->>>>>>> f14a6d93db07c66921f76ff958a14dcce0069226
 
     function createNewUser() {
       const { firstName, lastName, email } = req.body;
@@ -91,20 +86,6 @@ export default class AuthController {
     }
 
     function endOnPasswordMismatch([status, user]) {
-<<<<<<< HEAD
-      if (!status) {
-        throw createError(400, "Incorrect Password");
-      }
-      return user;
-    }
-
-    function sendResponse(user) {
-      req.session.email = user.email;
-      res.status(200).json({
-         errors:null,
-         data:user,
-         message: "You have successfully logged in",
-=======
       if (!status) return Promise.reject("invalid login credentials");
       return Promise.resolve(user);
     }
@@ -116,12 +97,7 @@ export default class AuthController {
       res.json({
         data,
         errors: null,
-<<<<<<< HEAD
-        message: "You have successfully logged in",
->>>>>>> f14a6d93db07c66921f76ff958a14dcce0069226
-=======
         message: "Welcome back agba boss :)",
->>>>>>> 47228f7a1fd9d09911bf6e6b4fc9e8ad557954be
       });
     }
   }

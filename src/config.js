@@ -21,14 +21,10 @@ export const port = process.env.PORT || 9000;
 
 export const secretKey = SECRET_KEY ||"secret";
 
-<<<<<<< HEAD
-export const dbURL = MONGO_URI || "mongodb://localhost:27017/lethouz";
-=======
 export const dbURL =
   process.env.NODE_ENV == "development"
     ? "mongodb://127.0.0.1:27017/lethouz"
     : MONGO_URI;
->>>>>>> 47228f7a1fd9d09911bf6e6b4fc9e8ad557954be
 
 export const sessionName = SESSION_NAME || "lethouz";
 

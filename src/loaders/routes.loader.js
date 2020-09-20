@@ -1,6 +1,6 @@
 import cors from "cors";
 import session from "express-session";
-//import passport from "passport";
+import passport from "passport";
 import connectStore from "connect-mongo";
 import bodyParser from "body-parser";
 import { v2 as cloudinary } from "cloudinary";
