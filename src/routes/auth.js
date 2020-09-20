@@ -39,6 +39,20 @@ authRouter.get(
   }
 );
 
-authRouter.post("/logout", AuthController.logout);
+// OAuth for Facebook
+authRouter.get(
+  "/facebook",
+  passport.authenticate("facebook", { scope: "email" })
+);
+
+authRouter.get(
+  "/facebook/callback",
+  passport.authenticate("facebook"),
+  (req, res) => {
+    res.send(req.user);
+  }
+);
+
+authRouter.get("/logout", AuthController.logout);
 
 export default authRouter;
