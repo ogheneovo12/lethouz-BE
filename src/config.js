@@ -13,6 +13,8 @@ const {
   CLOUDINARY_SECRET,
   FACEBOOK_APP_ID,
   FACEBOOK_APP_SECRET,
+  TWITTER_CONSUMER_KEY,
+  TWITTER_CONSUMER_SECRET,
 } = process.env;
 
 export const port = process.env.PORT || 9000;
@@ -41,4 +43,10 @@ export const facebook = {
   clientSecret: FACEBOOK_APP_SECRET,
   callbackURL: "http://localhost:9000/api/auth/facebook/callback",
   profileFields: ["id", "displayName", "name", "email"],
+};
+
+export const twitter = {
+  consumerKey: TWITTER_CONSUMER_KEY,
+  consumerSecret: TWITTER_CONSUMER_SECRET,
+  callbackURL: "http://localhost:9000/api/auth/twitter/callback",
 };

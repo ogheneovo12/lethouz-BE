@@ -1,6 +1,7 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as FacebookStrategy } from "passport-facebook";
+import { Strategy as TwitterStrategy } from "passport-twitter";
 import { User } from "../models";
 
 export default function loader(app, config) {
@@ -53,6 +54,17 @@ export default function loader(app, config) {
             console.log(err);
             console.log("access token: ", accessToken);
           }
+        }
+      )
+    );
+
+    passport.use(
+      new TwitterStrategy(
+        {
+          ...config.twitter,
+        },
+        async (accessToken, refreshToken, profile, done) => {
+          console.log(profile);
         }
       )
     );
