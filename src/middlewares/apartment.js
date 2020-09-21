@@ -11,5 +11,6 @@ export default function getCoordinates(req, res, next) {
     })
     .catch((error) => {
       console.log("error", error.message);
+      next(error)
     });
 }

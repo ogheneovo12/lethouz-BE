@@ -14,7 +14,7 @@ const isEmpty = require("is-empty");
 export function registerValidator(req, res, next) {
   const errors = {};
   const data = {};
-
+  console.log("in validator");
   data.firstName = !isEmpty(req.body.firstName) ? req.body.firstName : "";
   data.lastName = !isEmpty(req.body.lastName) ? req.body.lastName : "";
   data.email = !isEmpty(req.body.email) ? req.body.email : "";
@@ -131,7 +131,7 @@ export function createApartmentValidator(req, res, next) {
       body.details.bathrooms,
       body.details.toilets,
       body.details.size,
-    ].some((prop) => prop == "" || !validator.isInt(prop));
+    ].some((prop) => prop == "" || !validator.isInt(prop.toString()));
     if (invalid) {
       errors.details = "invalid house details";
     } else {
@@ -166,7 +166,7 @@ export function createApartmentValidator(req, res, next) {
   });
   req.body = { ...others, details: data.details, location: data.location };
 
-  //next();
+  next();
 }
 
 function sanitize(data) {

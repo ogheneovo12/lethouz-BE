@@ -75,7 +75,7 @@ export default function loadRoutes(app, c) {
     });
 
     app.use(({ status, errors, message }, req, res, next) => {
-      res.status(status).json({
+      res.status(status || 500).json({
         data: null,
         errors,
         message,
