@@ -1,8 +1,7 @@
 ## TODOS
 
-- Password reset.(done)
+- Password reset (_completed_)
 - File uploads
 - Find an apartment
 - user update
-- oAuth flow
-  - issues with twitter
+- oAuth flow (_completed, no twitter oAuth_)

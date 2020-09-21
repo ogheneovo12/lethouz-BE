@@ -5,5 +5,6 @@ export default (app, { dbURL }) =>
     .connect(dbURL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useCreateIndex: true,
     })
     .catch((err) => console.log(err));

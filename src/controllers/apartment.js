@@ -53,7 +53,35 @@ class ApartmentController {
   }
 
   static async search(req, res, next) {
-    console.log(req.query);
+    try {
+      // console.log(req.query);
+      // const query = await Apartment.find({
+      //   location: {
+      //     $near: {
+      //       $maxDistance: 1000,
+      //       $geometry: {
+      //         type: "Point",
+      //         lat: 6.6018,
+      //         lng: 3.3515,
+      //       },
+      //     },
+      //   },
+      // });
+      console.log(query);
+      // query.$where(function () {
+      //   Math.abs(this.location.lat - req.query.lat) <= 20;
+      // });
+      // const apartments = await query.exec();
+      // console.log(apartments);
+      // const apartments = await Apartment.find({
+      //   $where: function () {
+      //     Math.abs(this.location.lat - req.query.lat) <= 20;
+      //   },
+      // });
+      console.log(apartments);
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 

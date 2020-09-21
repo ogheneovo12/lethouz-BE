@@ -11,9 +11,9 @@ const apartmentRouter = Router();
 apartmentRouter.post(
   "/",
   createApartmentValidator,
-  getCoordinates,
-  verifySeller,
-  ApartmentController.create
+  getCoordinates
+  // verifySeller,
+  // ApartmentController.create
 );
 apartmentRouter.get("/", ApartmentController.search);
 //apartmentRouter.get("/featured",ApartmentController.getFeatured)
