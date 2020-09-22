@@ -1,6 +1,6 @@
 export function verifyForeignUser(req, res, next) {
   if (req.url == "/logout") return next();
-  if (req.session.user)
+  if (req.session.user || req.session.passport)
     return next({
       status: 403,
       message: `a user is currently in session`,
