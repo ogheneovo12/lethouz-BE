@@ -32,12 +32,19 @@ const AddressSchema = new Schema({
     type: String,
     required: true,
   },
-  location: {
-    type: { type: String },
-    coordinates: [],
+});
+
+const GeoSchema = new Schema({
+  type: {
+    type: String,
+    default: "Point",
+  },
+  coordinates: {
+    type: [Number],
+    index: "2dsphere",
   },
 });
-AddressSchema.index({ location: "2dsphere" });
+GeoSchema.index({ coordinates: "2dsphere" });
 
 const ApartmentSchema = new Schema(
   {
@@ -68,8 +75,9 @@ const ApartmentSchema = new Schema(
     },
     attachments: {
       type: [{ type: String }],
-      required: true,
+      required: false,
     },
+    geometry: GeoSchema,
     published: {
       type: Number,
       required: true,

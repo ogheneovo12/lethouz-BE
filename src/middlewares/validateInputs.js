@@ -111,8 +111,6 @@ export function createApartmentValidator(req, res, next) {
   data.title = !isEmpty(body.title) ? body.title : "";
   data.purpose = !isEmpty(body.purpose) ? body.purpose : "";
   data.type = !isEmpty(body.type) ? body.type : "";
-  // data.details = !isEmpty(body.details) ? body.details : "";
-  // data.location = !isEmpty(body.location) ? body.location : "";
 
   if (validator.isEmpty(data.title)) {
     errors.title = "Invalid title";
@@ -146,11 +144,11 @@ export function createApartmentValidator(req, res, next) {
       body.address.lga,
       body.address.state,
       body.address.address,
-    ].some((prop) => prop == "");
+    ].some((prop) => validator.isEmpty(prop));
     if (invalid) {
       errors.address = "invalid house location";
     } else {
-      const { lga, state, address } = body.location;
+      const { lga, state, address } = body.address;
       data.address = { lga, state, address };
     }
   }
@@ -164,8 +162,8 @@ export function createApartmentValidator(req, res, next) {
     type: data.type,
   });
   req.body = { ...others, details: data.details, address: data.address };
-
-  //next();
+  req.body.geometry = {};
+  next();
 }
 
 function sanitize(data) {
