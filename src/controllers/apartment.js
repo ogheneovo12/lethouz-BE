@@ -2,16 +2,18 @@ import { Apartment } from "../models";
 class ApartmentController {
   static async create(req, res, next) {
     let errors, message;
+    console.log(req.body);
     if (req.body.published) {
       errors = null;
       message = "apartment has been successfully listed";
     } else {
       errors = {};
-      errors.user = "Account not verified..no user profile video found";
+      errors.user = "Account not verified... no user profile video found";
       message = "apartment listing saved to drafts";
     }
     try {
       req.body.posted_by = req.session.user;
+      req.body.geometry.type = "Point";
       const created = await Apartment.create(req.body);
       if (!created) throw new Error("server failed to respond");
       return res.json({
@@ -53,7 +55,25 @@ class ApartmentController {
   }
 
   static async search(req, res, next) {
-    console.log(req.query);
+    try {
+      // console.log(req.query);
+      const apartments = await Apartment.aggregate().near({
+        near: {
+          type: "Point",
+          coordinates: [3.3515, 6.6019],
+        },
+        maxDistance: 1000,
+        spherical: true,
+        distanceField: "dist.calculated",
+      });
+      res.json({
+        data: apartments,
+        errors: null,
+        message: "apartments found",
+      });
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 

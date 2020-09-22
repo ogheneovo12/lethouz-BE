@@ -111,8 +111,6 @@ export function createApartmentValidator(req, res, next) {
   data.title = !isEmpty(body.title) ? body.title : "";
   data.purpose = !isEmpty(body.purpose) ? body.purpose : "";
   data.type = !isEmpty(body.type) ? body.type : "";
-  // data.details = !isEmpty(body.details) ? body.details : "";
-  // data.location = !isEmpty(body.location) ? body.location : "";
 
   if (validator.isEmpty(data.title)) {
     errors.title = "Invalid title";
@@ -139,33 +137,32 @@ export function createApartmentValidator(req, res, next) {
       data.details = { bedrooms, bathrooms, toilets, size };
     }
   }
-  if (!body.location) {
-    errors.location = "house location required";
+  if (!body.address) {
+    errors.address = "house address required";
   } else {
     const invalid = [
-      body.location.lga,
-      body.location.state,
-      body.location.address,
-    ].some((prop) => prop == "");
+      body.address.lga,
+      body.address.state,
+      body.address.address,
+    ].some((prop) => validator.isEmpty(prop));
     if (invalid) {
-      errors.location = "invalid house location";
+      errors.address = "invalid house location";
     } else {
-      const { lga, state, address } = body.location;
-      data.location = { lga, state, address };
+      const { lga, state, address } = body.address;
+      data.address = { lga, state, address };
     }
   }
-  console.log(req.files);
   if (!isEmpty(errors))
     return next({ status: 400, errors, message: "create apartment" });
   data.details = sanitize(data.details);
-  data.location = sanitize(data.location);
+  data.address = sanitize(data.address);
   const others = sanitize({
     title: data.title,
     purpose: data.purpose,
     type: data.type,
   });
-  req.body = { ...others, details: data.details, location: data.location };
-
+  req.body = { ...others, details: data.details, address: data.address };
+  req.body.geometry = {};
   next();
 }
 
@@ -174,4 +171,28 @@ function sanitize(data) {
     data[prop] = validator.escape(data[prop]);
   }
   return data;
+}
+
+export function passwordResetValidator(req, res, next) {
+  const errors = {};
+  const data = {};
+  data.currentPassword = req.body.currentPassword
+    ? req.body.currentPassword
+    : "";
+  data.newPassword = req.body.newPassword ? req.body.newPassword : "";
+  data.confirmPassword = req.body.confirmPassword
+    ? req.body.confirmPassword
+    : "";
+  if (isEmpty(data.newPassword) || data.newPassword != data.confirmPassword) {
+    return next({
+      status: 400,
+      errors: {
+        password:
+          "new password and confirm password must be equal non empty values",
+      },
+      message: "failed to reset password",
+    });
+  }
+  req.body = sanitize(data);
+  next();
 }

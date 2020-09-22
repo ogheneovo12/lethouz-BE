@@ -49,17 +49,19 @@ class UsersController {
   static async updatePassword(req, res, next) {
     try {
       const user = await User.findById(req.session.user).select("+password");
-      const correctPassword = await verifyPassword(
-        req.body.password,
-        user.password
-      );
-      if (!correctPassword)
-        return next({
-          status: 400,
-          errors: {
-            password: "incorect current password",
-          },
-        });
+      if (user.password) {
+        const correctPassword = await verifyPassword(
+          req.body.currentPassword,
+          user.password
+        );
+        if (!correctPassword)
+          return next({
+            status: 400,
+            errors: {
+              password: "incorect current password",
+            },
+          });
+      }
       const newHash = await hashPassword(req.body.newPassword);
       user.password = newHash;
       if (await user.save())

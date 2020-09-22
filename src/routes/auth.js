@@ -28,14 +28,17 @@ authRouter.post(
 // oAuth for Google
 authRouter.get(
   "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    prompt: "select_account",
+  })
 );
 
 authRouter.get(
   "/google/callback",
   passport.authenticate("google"),
   (req, res) => {
-    res.redirect("http://localhost:3000");
+    res.send(req.user);
   }
 );
 

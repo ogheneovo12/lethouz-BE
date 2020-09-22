@@ -2,19 +2,19 @@ import { Schema, model } from "mongoose";
 
 const DetailsSchema = new Schema({
   bedrooms: {
-    type: Number,
+    type: String,
     required: true,
   },
   bathrooms: {
-    type: Number,
+    type: String,
     required: true,
   },
   toilets: {
-    type: Number,
+    type: String,
     required: true,
   },
   size: {
-    type: Number,
+    type: String,
     required: true,
   },
 });
@@ -32,15 +32,19 @@ const AddressSchema = new Schema({
     type: String,
     required: true,
   },
-  lat: {
+});
+
+const GeoSchema = new Schema({
+  type: {
     type: String,
-    required: true,
+    default: "Point",
   },
-  lng: {
-    type: String,
-    required: true,
+  coordinates: {
+    type: [Number],
+    index: "2dsphere",
   },
 });
+GeoSchema.index({ coordinates: "2dsphere" });
 
 const ApartmentSchema = new Schema(
   {
@@ -65,14 +69,15 @@ const ApartmentSchema = new Schema(
       type: DetailsSchema,
       required: true,
     },
-    location: {
+    address: {
       type: AddressSchema,
       required: true,
     },
     attachments: {
       type: [{ type: String }],
-      required: true,
+      required: false,
     },
+    geometry: GeoSchema,
     published: {
       type: Number,
       required: true,

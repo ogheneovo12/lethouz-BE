@@ -103,11 +103,13 @@ export default class AuthController {
   }
 
   static logout(req, res, next) {
-    req.session.destroy();
-    res.json({
-      data: null,
-      errors: null,
-      message: "sorry to see you go :(",
+    req.session.destroy(function (e) {
+      req.logout();
+      res.json({
+        data: null,
+        errors: null,
+        message: "sorry to see you go :(",
+      });
     });
   }
 }
