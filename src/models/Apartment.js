@@ -69,6 +69,18 @@ const ApartmentSchema = new Schema(
       type: DetailsSchema,
       required: true,
     },
+    price: {
+      type: Number,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: false,
+    },
+    sold: {
+      type: Boolean,
+      default: false,
+    },
     address: {
       type: AddressSchema,
       required: true,
@@ -88,4 +100,7 @@ const ApartmentSchema = new Schema(
   }
 );
 
+ApartmentSchema.index({
+  "geometry.coordinates": "2dsphere",
+});
 export default model("Apartment", ApartmentSchema);

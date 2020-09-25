@@ -111,9 +111,14 @@ export function createApartmentValidator(req, res, next) {
   data.title = !isEmpty(body.title) ? body.title : "";
   data.purpose = !isEmpty(body.purpose) ? body.purpose : "";
   data.type = !isEmpty(body.type) ? body.type : "";
+  data.price = !isEmpty(body.price) ? String(body.price) : "";
+  data.description = !isEmpty(body.description) ? body.description : "";
 
   if (validator.isEmpty(data.title)) {
     errors.title = "Invalid title";
+  }
+  if (validator.isEmpty(data.price) || !validator.isInt(data.price)) {
+    errors.price = "Invalid price";
   }
   if (validator.isEmpty(data.purpose) || !validator.isAlpha(data.purpose)) {
     errors.purpose = "Invalid purpose";
@@ -158,6 +163,8 @@ export function createApartmentValidator(req, res, next) {
   data.address = sanitize(data.address);
   const others = sanitize({
     title: data.title,
+    price: data.price,
+    description: data.description,
     purpose: data.purpose,
     type: data.type,
   });
