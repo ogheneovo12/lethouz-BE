@@ -81,7 +81,7 @@ class ApartmentController {
           { type },
         ],
         sold: false,
-      });
+      }).populate("posted_by", "firstName lastName email");
       res.json({
         data: apartments,
         errors: null,
@@ -89,19 +89,37 @@ class ApartmentController {
       });
     } catch (err) {
       console.error(err);
+      next({
+        status: 500,
+        errors: { request: "failed to perform search" },
+        message: "apartments not found",
+      });
     }
   }
 
-  static async LocationFirst(lat, lng, radius) {
-    const apartments = await Apartment.aggregate().near({
-      near: {
-        type: "Point",
-        coordinates: [parseFloat(lng), parseFloat(lat)],
-      },
-      maxDistance: parseFloat(radius),
-      spherical: true,
-      distanceField: "dist.calculated",
-    });
+  static async update(req, res, next) {
+    try {
+      const update = await Apartment.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {
+          new: true,
+        }
+      );
+      res.send({
+        data: update,
+        errors: null,
+        message: "apartment details have been updated successfully",
+      });
+    } catch (err) {
+      next({
+        status: 400,
+        errors: {
+          request: "invalid details provided",
+        },
+        message: "failed to update apartment details",
+      });
+    }
   }
 }
 
@@ -127,3 +145,15 @@ export default ApartmentController;
 // } catch (err) {
 //   console.error(err);
 // }
+
+//  static async LocationFirst(lat, lng, radius) {
+//     const apartments = await Apartment.aggregate().near({
+//       near: {
+//         type: "Point",
+//         coordinates: [parseFloat(lng), parseFloat(lat)],
+//       },
+//       maxDistance: parseFloat(radius),
+//       spherical: true,
+//       distanceField: "dist.calculated",
+//     });
+//   }

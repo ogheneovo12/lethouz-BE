@@ -18,4 +18,9 @@ apartmentRouter.post(
 apartmentRouter.get("/", ApartmentController.search);
 //apartmentRouter.get("/featured",ApartmentController.getFeatured)
 apartmentRouter.get("/:id", ApartmentController.findOne);
+apartmentRouter.put(
+  "/:id",
+  createApartmentValidator,
+  ApartmentController.update
+);
 export default apartmentRouter;
