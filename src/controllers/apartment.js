@@ -117,7 +117,7 @@ class ApartmentController {
         errors: {
           request: "invalid details provided",
         },
-        message: "failed to update apartment details",
+        message: "  failed to update apartment details",
       });
     }
   }

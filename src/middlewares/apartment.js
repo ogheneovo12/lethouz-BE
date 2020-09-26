@@ -1,5 +1,5 @@
 const opencage = require("opencage-api-client");
-export default function getCoordinates(req, res, next) {
+export function getCoordinates(req, res, next) {
   opencage
     .geocode({ q: req.body.address.lga + "," + req.body.address.state })
     .then((data) => {
@@ -10,4 +10,8 @@ export default function getCoordinates(req, res, next) {
     .catch((error) => {
       console.log("error", error.message);
     });
+}
+
+export function searchQueryBuilder(req, res, next) {
+  console.log(req.query);
 }
