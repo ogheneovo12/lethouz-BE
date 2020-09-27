@@ -80,6 +80,7 @@ class ApartmentController {
       const apartments = await Apartment.find({
         $or: [...query],
         sold: false,
+        published: 1,
       }).populate("posted_by", "firstName lastName email");
       res.json({
         data: apartments,
