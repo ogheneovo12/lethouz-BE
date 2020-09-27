@@ -54,32 +54,31 @@ class ApartmentController {
   }
 
   static async search(req, res, next) {
-    const {
-      lat,
-      lng,
-      maxPrice,
-      minPrice,
-      state,
-      type,
-      radius = 20,
-    } = req.query;
+    let { lat, lng, price, state, type, radius, coordinates } = req.query;
+    const query = [];
+    if (coordinates) {
+      query.push({
+        geometry: {
+          $within: { $centerSphere: [[lng, lat], radius / 6371] },
+        },
+      });
+    }
+    if (price) {
+      query.push({
+        price: {
+          $lte: price,
+        },
+      });
+    }
+    if (state) {
+      query.push({ state });
+    }
+    if (type) {
+      query.push({ type });
+    }
     try {
       const apartments = await Apartment.find({
-        $or: [
-          {
-            geometry: {
-              $within: { $centerSphere: [[lng, lat], radius / 6371] },
-            },
-          },
-          {
-            price: {
-              $lte: maxPrice,
-              $gte: minPrice,
-            },
-          },
-          { state },
-          { type },
-        ],
+        $or: [...query],
         sold: false,
       }).populate("posted_by", "firstName lastName email");
       res.json({
@@ -124,36 +123,3 @@ class ApartmentController {
 }
 
 export default ApartmentController;
-
-// const { lat, lng, minPrice, maxPrice, radius = 30000 } = req.query;
-// console.log(radius);
-// try {
-//   const apartments = await Apartment.aggregate().near({
-//     near: {
-//       type: "Point",
-//       coordinates: [lng, lat],
-//     },
-//     maxDistance: Number(radius),
-//     spherical: true,
-//     distanceField: "dist.calculated",
-//   });
-//   res.json({
-//     data: apartments,
-//     errors: null,
-//     message: "apartments found",
-//   });
-// } catch (err) {
-//   console.error(err);
-// }
-
-//  static async LocationFirst(lat, lng, radius) {
-//     const apartments = await Apartment.aggregate().near({
-//       near: {
-//         type: "Point",
-//         coordinates: [parseFloat(lng), parseFloat(lat)],
-//       },
-//       maxDistance: parseFloat(radius),
-//       spherical: true,
-//       distanceField: "dist.calculated",
-//     });
-//   }
