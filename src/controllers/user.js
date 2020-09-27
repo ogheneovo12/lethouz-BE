@@ -134,7 +134,7 @@ class UsersController {
 
   static async getApartments(req, res, next) {
     try {
-      const apartments = await Apartment.find({ posted_by: req.session.id });
+      const apartments = await Apartment.find({ posted_by: req.session.user });
 
       return res.json({
         data: apartments,
