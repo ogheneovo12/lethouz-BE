@@ -5,7 +5,7 @@
 Request
 
 ```
-/apartment?lng=3.3515&lat=6.6019&minPrice=20000&maxPrice=500000&state=new&type=duplex
+/apartment?lng=3.3515&lat=6.6019&price=3000&state=new&type=duplex
 ```
 
 Response
