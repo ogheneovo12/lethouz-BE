@@ -13,9 +13,6 @@ apiRouter.get("/", (req, res) => {
     mesage: "welcome to the api route",
   });
 });
-// apiRouter.use((req, res, next) => {
-//   console.log(req.session);
-// });
 apiRouter.post("/image", parser.array("profile", 5), (req, res) => {
   console.log(req.files);
 });

@@ -62,7 +62,7 @@ export default class AuthController {
       .then(endOnPasswordMismatch)
       .then(sendResponse)
       .catch((request) => {
-        res.json({
+        return next({
           status: 400,
           errors: {
             request: "incorrect login credentials / means of logging in ",
