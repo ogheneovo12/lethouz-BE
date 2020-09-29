@@ -57,6 +57,10 @@ const ApartmentSchema = new Schema(
       ref: "User",
       required: true,
     },
+    currentState: {
+      type: String,
+      required: true,
+    },
     purpose: {
       type: String,
       required: true,
