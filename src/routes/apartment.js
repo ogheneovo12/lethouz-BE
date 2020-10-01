@@ -17,7 +17,7 @@ apartmentRouter.post(
   ApartmentController.create
 );
 apartmentRouter.get("/", searchQueryBuilder, ApartmentController.search);
-//apartmentRouter.get("/featured",ApartmentController.getFeatured)
+apartmentRouter.get("/featured", ApartmentController.getAll);
 apartmentRouter.get("/:id", ApartmentController.findOne);
 apartmentRouter.put(
   "/:id",

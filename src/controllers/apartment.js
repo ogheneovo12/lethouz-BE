@@ -117,7 +117,26 @@ class ApartmentController {
         errors: {
           request: "invalid details provided",
         },
-        message: "  failed to update apartment details",
+        message: "failed to update apartment details",
+      });
+    }
+  }
+
+  static async getAll(req, res, next) {
+    try {
+      const data = await Apartment.find({ published: 1 });
+      res.send({
+        data: data,
+        errors: null,
+        message: "list of featured apartment retireved",
+      });
+    } catch (err) {
+      next({
+        status: 500,
+        errors: {
+          request: "serve failed to respond :(",
+        },
+        message: "failed to retrieve featured apartments",
       });
     }
   }
