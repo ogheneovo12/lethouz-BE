@@ -75,3 +75,16 @@ export function searchQueryBuilder(req, res, next) {
   req.query = query;
   next();
 }
+
+export function checkOwnerOfApartment(req, res, next) {
+  try {
+  } catch (err) {
+    return next({
+      status: 404,
+      errors: {
+        apartment: "invalid apartment id",
+      },
+      message: "failed to save/unsave apartment",
+    });
+  }
+}
