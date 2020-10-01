@@ -193,7 +193,6 @@ function sanitize(data) {
 }
 
 export function passwordResetValidator(req, res, next) {
-  const errors = {};
   const data = {};
   data.currentPassword = req.body.currentPassword
     ? req.body.currentPassword
