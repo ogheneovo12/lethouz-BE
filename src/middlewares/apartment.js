@@ -1,6 +1,7 @@
 import opencage from "opencage-api-client";
 import validator from "validator";
 import empty from "is-empty";
+import {Apartment} from "../models/index"
 export function getCoordinates(req, res, next) {
   opencage
     .geocode({ q: req.body.address.lga + "," + req.body.address.state })
@@ -78,13 +79,22 @@ export function searchQueryBuilder(req, res, next) {
 
 export function checkOwnerOfApartment(req, res, next) {
   try {
+    const owner = await Apartment.findById(req.body.apartment).select("posted_by");
+    if (owner == req.session.user) return next({
+      status: 400,
+      errors: {
+        apartment: "you cannot save an aprtment you own"
+      },
+      message: "failed to save an apartment"
+    })
+    return next();
   } catch (err) {
     return next({
       status: 404,
       errors: {
         apartment: "invalid apartment id",
       },
-      message: "failed to save/unsave apartment",
+      message: "failed to save apartment",
     });
   }
 }
