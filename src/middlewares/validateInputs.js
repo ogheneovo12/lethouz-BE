@@ -112,6 +112,7 @@ export function createApartmentValidator(req, res, next) {
   data.purpose = !isEmpty(body.purpose) ? body.purpose : "";
   data.type = !isEmpty(body.type) ? body.type : "";
   data.price = !isEmpty(body.price) ? String(body.price) : "";
+  data.currentState = !isEmpty(body.currentState) ? body.currentState : "";
   data.description = !isEmpty(body.description) ? body.description : "";
 
   if (validator.isEmpty(data.title)) {
@@ -119,6 +120,16 @@ export function createApartmentValidator(req, res, next) {
   }
   if (validator.isEmpty(data.price) || !validator.isInt(data.price)) {
     errors.price = "Invalid price";
+  }
+  if (validator.isEmpty(data.currentState)) {
+    errors.currentState = "current state required";
+  } else {
+    if (
+      data.currentState != "new" &&
+      data.currentState != "furnished" &&
+      data.currentState != "serviced"
+    )
+      errors.currentState = "invalid current state";
   }
   if (validator.isEmpty(data.purpose) || !validator.isAlpha(data.purpose)) {
     errors.purpose = "Invalid purpose";
@@ -163,6 +174,7 @@ export function createApartmentValidator(req, res, next) {
   data.address = sanitize(data.address);
   const others = sanitize({
     title: data.title,
+    currentState: data.currentState,
     price: data.price,
     description: data.description,
     purpose: data.purpose,
