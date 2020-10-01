@@ -13,3 +13,4 @@ export function hashPassword(string) {
 export function verifyPassword(password, hash) {
   return bcrypt.compare(password, hash);
 }
+

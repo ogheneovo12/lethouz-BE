@@ -8,10 +8,10 @@ import {
 const userRouter = Router();
 
 // get user details
-userRouter.get("/", UsersController.showUser);
+userRouter.get("/", UsersController.showUser); //done
 
 //update profile
-userRouter.put("/", updateProfileValidator, UsersController.update);
+userRouter.put("/", updateProfileValidator, UsersController.update); 
 
 //reset password
 userRouter.put(
@@ -21,12 +21,12 @@ userRouter.put(
 );
 
 //get saved apartments
-userRouter.get("/saved", UsersController.getSaved);
+userRouter.get("/saved", UsersController.getSaved); //nil
 
 // save/unsave apartment
-userRouter.put("/saved", UsersController.toggleSaved);
+userRouter.put("/saved", UsersController.toggleSaved); //nill
 
 //get user apartments
-userRouter.get("/apartment", UsersController.getApartments);
+userRouter.get("/apartment", UsersController.getApartments); //done
 
 export default userRouter;
