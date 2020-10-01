@@ -3,9 +3,6 @@ import session from "express-session";
 import passport from "passport";
 import connectStore from "connect-mongo";
 import bodyParser from "body-parser";
-import { v2 as cloudinary } from "cloudinary";
-import multer from "multer";
-import cloudinaryStorage from "multer-storage-cloudinary";
 import mongoose from "mongoose";
 import apiRoutes from "../routes";
 import * as config from "../config";
@@ -31,14 +28,6 @@ export default function loadRoutes(app, c) {
     );
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
-
-    //setup cloudinary
-    //cloudinarySetup(config);
-    cloudinary.config(config.cloudinary);
-    const storage = cloudinaryStorage({
-      cloudinary: cloudinary,
-      folder: "uploads",
-    });
     // session configuration
     app.use(
       session({

@@ -22,7 +22,7 @@ apartmentRouter.get("/:id", ApartmentController.findOne);
 apartmentRouter.put(
   "/:id",
   createApartmentValidator,
-  getCoordinates,
+  //getCoordinates,
   ApartmentController.update
 );
 export default apartmentRouter;

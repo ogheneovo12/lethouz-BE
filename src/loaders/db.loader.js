@@ -6,5 +6,6 @@ export default (app, { dbURL }) =>
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
+      useFindAndModify: false,
     })
     .catch((err) => console.log(err));
