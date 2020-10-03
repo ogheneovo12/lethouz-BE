@@ -15,14 +15,14 @@ apartmentRouter.post(
   getCoordinates,
   verifySeller,
   ApartmentController.create
-);
-apartmentRouter.get("/", searchQueryBuilder, ApartmentController.search);
-apartmentRouter.get("/featured", ApartmentController.getAll);
-apartmentRouter.get("/:id", ApartmentController.findOne);
+);//done
+apartmentRouter.get("/", searchQueryBuilder, ApartmentController.search); //halfway, server issue
+apartmentRouter.get("/featured", ApartmentController.getAll); //done
+apartmentRouter.get("/:id", ApartmentController.findOne); //done
 apartmentRouter.put(
   "/:id",
   createApartmentValidator,
   //getCoordinates,
   ApartmentController.update
-);
+);  //need final testing
 export default apartmentRouter;
