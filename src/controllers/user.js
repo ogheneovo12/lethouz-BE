@@ -116,7 +116,9 @@ class UsersController {
         user.savedApartments.splice(index, 1);
       }
       await user.save();
-      const apartment = await Apartment.findById(id);
+      const apartment = await User.findById(req.session.user)
+        .select("savedApartments")
+        .populate("savedApartments");
       return res.json({
         data: apartment,
         errors: null,

@@ -2,6 +2,7 @@ import {
   registerValidator,
   loginValidator,
   createApartmentValidator,
+  updateApartmentValidator,
 } from "./validateInputs";
 import { getCoordinates, searchQueryBuilder } from "./apartment";
 import { verifyNewUser, verifyOldUser, verifySeller } from "./verifyUser";
@@ -12,6 +13,7 @@ export {
   getCoordinates,
   searchQueryBuilder,
   createApartmentValidator,
+  updateApartmentValidator,
   loginValidator,
   verifyNewUser,
   verifySeller,
