@@ -16,14 +16,14 @@ authRouter.post(
   registerValidator,
   verifyNewUser,
   AuthController.registerUser
-);
+); //done
 
 authRouter.post(
   "/login",
   loginValidator,
   verifyOldUser,
   AuthController.loginUser
-);
+); //done
 
 // oAuth for Google
 authRouter.get(
@@ -32,7 +32,7 @@ authRouter.get(
     scope: ["profile", "email"],
     prompt: "select_account",
   })
-);
+); //done
 
 authRouter.get(
   "/google/callback",
@@ -46,7 +46,7 @@ authRouter.get(
 authRouter.get(
   "/facebook",
   passport.authenticate("facebook", { scope: "email" })
-);
+);//done
 
 authRouter.get(
   "/facebook/callback",
@@ -70,6 +70,6 @@ authRouter.get(
   }
 );
 
-authRouter.get("/logout", AuthController.logout);
+authRouter.get("/logout", AuthController.logout); //done
 
 export default authRouter;

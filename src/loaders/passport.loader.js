@@ -27,6 +27,7 @@ export default function loader(app, config) {
             });
             if (newUser) return done(null, newUser);
           } catch (err) {
+            console.log(err)
             console.log("access token: ", accessToken);
           }
         }
@@ -58,16 +59,16 @@ export default function loader(app, config) {
       )
     );
 
-    passport.use(
-      new TwitterStrategy(
-        {
-          ...config.twitter,
-        },
-        async (accessToken, refreshToken, profile, done) => {
-          console.log(profile);
-        }
-      )
-    );
+    // passport.use(
+    //   new TwitterStrategy(
+    //     {
+    //       ...config.twitter,
+    //     },
+    //     async (accessToken, refreshToken, profile, done) => {
+    //       console.log(profile);
+    //     }
+    //   )
+    // );
 
     passport.serializeUser((user, done) => {
       done(null, user.id);

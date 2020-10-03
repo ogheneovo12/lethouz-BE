@@ -84,12 +84,11 @@ class UsersController {
 
   static async getSaved(req, res, next) {
     try {
-      const apartments = await (
-        await User.findById(req.session.user).select("savedApartments")
-      ).populate("savedApartments");
-
+      const { savedApartments } = await User.findById(req.session.user)
+        .populate("savedApartments")
+        .select("savedApartments");
       return res.json({
-        data: apartments,
+        data: savedApartments,
         errors: null,
         message: "user's saved apartments found",
       });
