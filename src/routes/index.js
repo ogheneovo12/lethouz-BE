@@ -13,8 +13,9 @@ apiRouter.get("/", (req, res) => {
 apiRouter.post("/image", (req, res) => {
   console.log(req.files);
 });
-apiRouter.use("/auth", verifyForeignUser, authRoutes);
-apiRouter.use("/user", verifyUser, userRoutes);
-apiRouter.use("/apartment", verifyUser, apartmentRoutes);
+apiRouter.use("/auth", verifyForeignUser, authRoutes); //done
+apiRouter.use("/user", verifyUser, userRoutes); //5done, 1 not needed, 6totals
+apiRouter.use("/apartment", verifyUser, apartmentRoutes); //3 done, 1test. 1issue 5total
 
+//pending fe works in total are 2;
 export default apiRouter;
