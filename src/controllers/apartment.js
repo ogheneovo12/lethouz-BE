@@ -99,25 +99,31 @@ class ApartmentController {
 
   static async update(req, res, next) {
     try {
-      const update = await Apartment.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        {
-          new: true,
+      const apartment = await Apartment.findById(req.params.id);
+      for (const prop in req.body) {
+        if (!(req.body[prop] instanceof Object) || prop == "attachments") {
+          apartment[prop] = req.body[prop];
+        } else {
+          for (const n in req.body[prop]) {
+            apartment[prop][n] = req.body[prop][n];
+          }
         }
-      );
-      res.send({
-        data: update,
-        errors: null,
-        message: "apartment details have been updated successfully",
-      });
+      }
+      if (await apartment.save()) {
+        return res.json({
+          data: apartment,
+          errors: null,
+          message: "apartment details have been updated",
+        });
+      }
     } catch (err) {
+      console.error(err);
       next({
         status: 400,
         errors: {
-          request: "invalid details provided",
+          apartment: err.message,
         },
-        message: "failed to update apartment details",
+        message: "failed to update apartment",
       });
     }
   }
