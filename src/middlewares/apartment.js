@@ -11,7 +11,7 @@ export async function getCoordinates(req, res, next) {
       {
         params: {
           address: `${req.body.address.address},${req.body.address.state}`,
-          key: "AIzaSyAO5UKPU849FaGIhuPaYX6Yutj25GMiWj0",
+          key: process.env.GOOGLE_GEOAPI_KEY,
         },
       }
     );
