@@ -3,6 +3,7 @@ import ApartmentController from "../controllers/apartment";
 
 import {
   createApartmentValidator,
+  updateApartmentValidator,
   verifySeller,
   searchQueryBuilder,
   getCoordinates,
@@ -21,7 +22,7 @@ apartmentRouter.get("/featured", ApartmentController.getAll); //done
 apartmentRouter.get("/:id", ApartmentController.findOne); //done
 apartmentRouter.put(
   "/:id",
-  createApartmentValidator,
+  updateApartmentValidator,
   //getCoordinates,
   ApartmentController.update
 );  //need final testing

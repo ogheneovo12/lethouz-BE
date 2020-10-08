@@ -114,8 +114,10 @@ class UsersController {
         message = "apartment has been removed from saved apartments";
         user.savedApartments.splice(index, 1);
       }
-       const newUser = await user.save();
-      const { savedApartments:apartment } = await newUser.populate("savedApartments").execPopulate();
+      await user.save();
+      const apartment = await User.findById(req.session.user)
+        .select("savedApartments")
+        .populate("savedApartments");
       return res.json({
         data: apartment,
         errors: null,

@@ -1,25 +1,42 @@
 import opencage from "opencage-api-client";
+import axios from "axios";
 import validator from "validator";
 import empty from "is-empty";
 import { Apartment } from "../models/index";
-export function getCoordinates(req, res, next) {
-  opencage
-    .geocode({ q: req.body.address.lga + "," + req.body.address.state })
-    .then((data) => {
-      const results = data.results.map((r) => r.geometry);
-      req.body.geometry.coordinates = [results[0].lng, results[0].lat];
-      next();
-    })
-    .catch((error) => {
-      console.log("error", error.message);
-      next(error)
+
+export async function getCoordinates(req, res, next) {
+  try {
+    const result = await axios.get(
+      "https://maps.googleapis.com/maps/api/geocode/json",
+      {
+        params: {
+          address: `${req.body.address.address},${req.body.address.state}`,
+          key: process.env.GOOGLE_GEOAPI_KEY,
+        },
+      }
+    );
+    const geometry = Object.values(
+      result.data.results[0].geometry.location
+    ).reverse();
+    req.body.geometry.coordinates = geometry;
+    next();
+  } catch (err) {
+    console.log(err.mesage);
+    next({
+      status: 500,
+      errors: {
+        request: err.message,
+      },
+      message: "failed to fetch coordinates",
     });
+  }
 }
 
 export function searchQueryBuilder(req, res, next) {
   const errors = {};
   const query = {};
   let { lat, lng, price, current_state, type, radius } = req.query;
+
   //validate latitude and longitude
   if ((!lat && lng) || (lat && !lng)) {
     errors.coordinates =
