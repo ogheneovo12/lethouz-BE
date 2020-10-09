@@ -18,6 +18,7 @@ export async function getCoordinates(req, res, next) {
     const geometry = Object.values(
       result.data.results[0].geometry.location
     ).reverse();
+    console.log(result.data.results[0].geometry.location);
     req.body.geometry.coordinates = geometry;
     next();
   } catch (err) {
