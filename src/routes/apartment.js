@@ -6,24 +6,27 @@ import {
   updateApartmentValidator,
   verifySeller,
   searchQueryBuilder,
+  verifyUser,
   getCoordinates,
 } from "../middlewares";
 const apartmentRouter = Router();
 
 apartmentRouter.post(
   "/",
+  verifyUser,
   createApartmentValidator,
   getCoordinates,
   verifySeller,
   ApartmentController.create
-);//done
-apartmentRouter.get("/", searchQueryBuilder, ApartmentController.search); //halfway, server issue
+); //done
+apartmentRouter.get("/", searchQueryBuilder, ApartmentController.search);
 apartmentRouter.get("/featured", ApartmentController.getAll); //done
 apartmentRouter.get("/:id", ApartmentController.findOne); //done
 apartmentRouter.put(
   "/:id",
+  verifyUser,
   updateApartmentValidator,
   //getCoordinates,
   ApartmentController.update
-);  //need final testing
+); //need final testing
 export default apartmentRouter;
