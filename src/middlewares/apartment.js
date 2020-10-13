@@ -18,7 +18,6 @@ export async function getCoordinates(req, res, next) {
     const geometry = Object.values(
       result.data.results[0].geometry.location
     ).reverse();
-    console.log(result.data.results[0].geometry.location);
     req.body.geometry.coordinates = geometry;
     next();
   } catch (err) {
@@ -90,7 +89,7 @@ export function searchQueryBuilder(req, res, next) {
     return res.status(400).json({
       data: null,
       errors,
-      message: "failed perform search",
+      message: "failed to perform search",
     });
   req.query = query;
   next();
@@ -114,7 +113,7 @@ export async function checkOwnerOfApartment(req, res, next) {
     return next({
       status: 404,
       errors: {
-        apartment: "invalid apartment id",
+        apartment: "invalid apartment id; apartment not found",
       },
       message: "failed to save apartment",
     });
