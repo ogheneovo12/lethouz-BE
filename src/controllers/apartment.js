@@ -55,33 +55,36 @@ class ApartmentController {
 
   static async search(req, res, next) {
     let { lat, lng, price, state, type, radius, coordinates } = req.query;
-    const query = [];
+    const query = { sold: false };
+    const queryOptions = [];
     if (coordinates) {
-      query.push({
-        geometry: {
-          $within: { $centerSphere: [[lng, lat], radius / 6371] },
-        },
-      });
+      query.geometry = {
+        $within: { $centerSphere: [[lng, lat], radius / 6371] },
+      };
     }
     if (price) {
-      query.push({
+      queryOptions.push({
         price: {
           $lte: price,
         },
       });
     }
     if (state) {
-      query.push({ state });
+      queryOptions.push({ state });
     }
     if (type) {
-      query.push({ type });
+      queryOptions.push({ type });
     }
+    if (queryOptions.length) {
+      query["$or"] = queryOptions;
+    }
+
+    console.log(query);
     try {
-      const apartments = await Apartment.find({
-        $or: [...query],
-        sold: false,
-        //published: 1,( uncomment in production enviroment )
-      }).populate("posted_by", "firstName lastName email");
+      const apartments = await Apartment.find(query).populate(
+        "posted_by",
+        "firstName lastName email"
+      );
       res.json({
         data: apartments,
         errors: null,

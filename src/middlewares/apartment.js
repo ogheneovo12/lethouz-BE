@@ -41,6 +41,8 @@ export function searchQueryBuilder(req, res, next) {
   if ((!lat && lng) || (lat && !lng)) {
     errors.coordinates =
       "invalid coordinates: latitude must have a corresponding longitude";
+  } else if (!lat && !lng) {
+    console.log("okay ooo as u no dey use location na");
   } else {
     if (!validator.isFloat(lat) || !validator.isFloat(lng)) {
       errors.coordinates = "invalid latitude/longitude ";
