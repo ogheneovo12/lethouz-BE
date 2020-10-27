@@ -175,6 +175,7 @@ class UsersController {
     try {
       const user = await User.findOne({ username: req.params.username }),
         apartments = await Apartment.find({ posted_by: user._id });
+      if (!user) throw new Error("Invalid username");
       return res.json({
         data: apartments,
         errors: null,
