@@ -151,6 +151,44 @@ class UsersController {
       });
     }
   }
+
+  static async findOne(req, res, next) {
+    try {
+      const user = await User.findOne({ username: req.params.username });
+      if (!user) throw new Error("Invalid username");
+      return res.json({
+        data: user,
+        errors: null,
+        message: "user's details have been retrieved",
+      });
+    } catch (err) {
+      console.log(err.message);
+      next({
+        status: 404,
+        errors: { request: err.message },
+        message: "unable to find user",
+      });
+    }
+  }
+
+  static async getUserApartments(req, res, next) {
+    try {
+      const user = await User.findOne({ username: req.params.username }),
+        apartments = await Apartment.find({ posted_by: user._id });
+      return res.json({
+        data: apartments,
+        errors: null,
+        message: "user's uploaded apartments",
+      });
+    } catch (err) {
+      console.log(err.message);
+      next({
+        status: 400,
+        errors: { request: err.message },
+        message: "unable to process request",
+      });
+    }
+  }
 }
 
 export default UsersController;
