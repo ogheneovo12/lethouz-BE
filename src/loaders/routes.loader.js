@@ -29,6 +29,7 @@ export default function loadRoutes(app, c) {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
     // session configuration
+    console.log(process.env.NODE_ENV == "production");
     app.use(
       session({
         name: config.sessionName,
@@ -36,7 +37,7 @@ export default function loadRoutes(app, c) {
         saveUninitialized: false,
         resave: false,
         cookie: {
-          sameSite: true,
+          sameSite: false,
           secure: process.env.NODE_ENV === "production",
           maxAge: 1000 * 60 * 60 * 3,
         },
