@@ -3,30 +3,38 @@ import UsersController from "../controllers/user";
 import {
   updateProfileValidator,
   passwordResetValidator,
-} from "../middlewares/validateInputs";
+  verifyUser,
+} from "../middlewares";
 
 const userRouter = Router();
 
 // get user details
-userRouter.get("/", UsersController.showUser); //done
+userRouter.get("/", verifyUser, UsersController.showUser); //done
 
 //update profile
-userRouter.put("/", updateProfileValidator, UsersController.update); //nil //no ui
+userRouter.put("/", verifyUser, updateProfileValidator, UsersController.update); //nil //no ui
+
+// get user details for guests
+userRouter.get("/:username", UsersController.findOne);
+
+// get user aoartments for guests
+userRouter.get("/:username/apartment", UsersController.getUserApartments);
 
 //reset password
 userRouter.put(
   "/password",
+  verifyUser,
   passwordResetValidator,
   UsersController.updatePassword
 ); //done
 
 //get saved apartments
-userRouter.get("/saved", UsersController.getSaved); //done
+userRouter.get("/saved", verifyUser, UsersController.getSaved); //done
 
 // save/unsave apartment
-userRouter.put("/saved", UsersController.toggleSaved); //done
+userRouter.put("/saved", verifyUser, UsersController.toggleSaved); //done
 
 //get user apartments
-userRouter.get("/apartment", UsersController.getApartments); //done
+userRouter.get("/apartment", verifyUser, UsersController.getApartments); //done
 
 export default userRouter;
