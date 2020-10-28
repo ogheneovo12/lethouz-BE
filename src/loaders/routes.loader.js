@@ -29,7 +29,6 @@ export default function loadRoutes(app, c) {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
     // session configuration
-    console.log(process.env.NODE_ENV == "production");
     app.use(
       session({
         name: config.sessionName,
