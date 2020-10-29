@@ -2,6 +2,7 @@ import cors from "cors";
 import session from "express-session";
 import passport from "passport";
 import connectStore from "connect-mongo";
+import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import apiRoutes from "../routes";
@@ -47,6 +48,11 @@ export default function loadRoutes(app, c) {
         }),
       })
     );
+
+    app.use(cookieParser());
+    app.use((_, _, next) => {
+      console.log(cookies, req.cookies);
+    });
 
     app.use(passport.initialize());
     app.use(passport.session());
