@@ -36,7 +36,8 @@ export default function loadRoutes(app, c) {
         saveUninitialized: false,
         resave: false,
         cookie: {
-          sameSite: false,
+          domain: "lethouz.netlify.app",
+          sameSite: true,
           secure: process.env.NODE_ENV === "production",
           maxAge: 1000 * 60 * 60 * 3,
         },
