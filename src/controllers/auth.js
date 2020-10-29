@@ -63,7 +63,8 @@ export default class AuthController {
       .then(comparePassword)
       .then(endOnPasswordMismatch)
       .then(sendResponse)
-      .catch((request) => {
+      .catch((err) => {
+        console.log(err.message);
         return next({
           status: 400,
           errors: {
@@ -94,6 +95,7 @@ export default class AuthController {
 
     function sendResponse(user) {
       req.session.user = user._id;
+      console.log(req.session.user, user._id);
       let data = { ...user._doc };
       delete data.password;
       res.json({
