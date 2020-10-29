@@ -39,7 +39,7 @@ export default function loadRoutes(app, c) {
         resave: false,
         cookie: {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: false, //process.env.NODE_ENV === "production",
           maxAge: 1000 * 60 * 60 * 24, // set to 24 hours
         },
         store: new MongoStore({
