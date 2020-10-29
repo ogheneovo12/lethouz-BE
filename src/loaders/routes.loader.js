@@ -50,8 +50,9 @@ export default function loadRoutes(app, c) {
     );
 
     app.use(cookieParser());
-    app.use((_, _, next) => {
+    app.use((req, res, next) => {
       console.log(cookies, req.cookies);
+      next();
     });
 
     app.use(passport.initialize());
