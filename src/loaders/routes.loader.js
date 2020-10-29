@@ -40,7 +40,7 @@ export default function loadRoutes(app, c) {
           domain: "lethouz.netlify.app",
           sameSite: true,
           secure: false, //process.env.NODE_ENV === "production",
-          maxAge: 1000 * 60 * 60 * 3,
+          maxAge: 1000 * 60 * 60 * 24, // set to 2 hours
         },
         store: new MongoStore({
           mongooseConnection: mongoose.connection,
