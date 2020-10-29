@@ -39,7 +39,7 @@ export default function loadRoutes(app, c) {
         resave: false,
         cookie: {
           httpOnly: true,
-          secure: false, //process.env.NODE_ENV === "production",
+          secure: process.env.NODE_ENV === "production",
           maxAge: 1000 * 60 * 60 * 24, // set to 24 hours
         },
         store: new MongoStore({
@@ -49,17 +49,17 @@ export default function loadRoutes(app, c) {
       })
     );
 
-    app.use((req, res, next) => {
-      console.log("Session", req.session);
-      console.log(req.method, req.url);
-      // if (req.cookies) {
-      //   console.log("cookies", req.cookies);
-      // }
-      // if (req.signedCookies) {
-      //   console.log("signed cookies", req.signedCookies);
-      // }
-      next();
-    });
+    //app.use((req, res, next) => {
+    // console.log("Session", req.session);
+    // console.log(req.method, req.url);
+    // if (req.cookies) {
+    //   console.log("cookies", req.cookies);
+    // }
+    // if (req.signedCookies) {
+    //   console.log("signed cookies", req.signedCookies);
+    // }
+    //next();
+    //});
 
     app.use(passport.initialize());
     app.use(passport.session());

@@ -95,7 +95,6 @@ export default class AuthController {
 
     function sendResponse(user) {
       req.session.user = user._id;
-      console.log(req.session.user, user._id);
       let data = { ...user._doc };
       delete data.password;
       res.json({
