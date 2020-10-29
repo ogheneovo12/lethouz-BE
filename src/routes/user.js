@@ -14,12 +14,6 @@ userRouter.get("/", verifyUser, UsersController.showUser); //done
 //update profile
 userRouter.put("/", verifyUser, updateProfileValidator, UsersController.update); //nil //no ui
 
-// get user details for guests
-userRouter.get("/:username", UsersController.findOne);
-
-// get user aoartments for guests
-userRouter.get("/:username/apartment", UsersController.getUserApartments);
-
 //reset password
 userRouter.put(
   "/password",
@@ -36,5 +30,11 @@ userRouter.put("/saved", verifyUser, UsersController.toggleSaved); //done
 
 //get user apartments
 userRouter.get("/apartment", verifyUser, UsersController.getApartments); //done
+
+// get user details for guests
+userRouter.get("/:username", UsersController.findOne);
+
+// get user aoartments for guests
+userRouter.get("/:username/apartment", UsersController.getUserApartments);
 
 export default userRouter;

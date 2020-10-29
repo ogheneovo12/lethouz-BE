@@ -29,7 +29,8 @@ export default function loadRoutes(app, c) {
     );
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
-    // session configuration
+
+    app.use(cookieParser(config.secretKey));
     app.use(
       session({
         name: config.sessionName,
@@ -37,10 +38,9 @@ export default function loadRoutes(app, c) {
         saveUninitialized: false,
         resave: false,
         cookie: {
-          domain: "lethouz.netlify.app",
-          sameSite: true,
-          secure: false, //process.env.NODE_ENV === "production",
-          maxAge: 1000 * 60 * 60 * 24, // set to 2 hours
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          maxAge: 1000 * 60 * 60 * 24, // set to 24 hours
         },
         store: new MongoStore({
           mongooseConnection: mongoose.connection,
@@ -49,9 +49,15 @@ export default function loadRoutes(app, c) {
       })
     );
 
-    app.use(cookieParser());
     app.use((req, res, next) => {
-      console.log("cookies", req.cookies);
+      console.log("Session", req.session);
+      console.log(req.method, req.url);
+      // if (req.cookies) {
+      //   console.log("cookies", req.cookies);
+      // }
+      // if (req.signedCookies) {
+      //   console.log("signed cookies", req.signedCookies);
+      // }
       next();
     });
 
@@ -72,7 +78,7 @@ export default function loadRoutes(app, c) {
     });
 
     app.use(({ status, errors, message }, req, res, next) => {
-      console.log(errors);
+      //console.log(errors);
       res.status(status || 500).json({
         data: null,
         errors,
