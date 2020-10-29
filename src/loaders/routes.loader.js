@@ -51,7 +51,7 @@ export default function loadRoutes(app, c) {
 
     app.use(cookieParser());
     app.use((req, res, next) => {
-      console.log(cookies, req.cookies);
+      console.log("cookies", req.cookies);
       next();
     });
 
