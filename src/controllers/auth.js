@@ -9,17 +9,19 @@ export default class AuthController {
       .then(attachPasswordHash)
       .then(saveUserDetails)
       .then(sendCookie)
-      .catch(() =>
-        next({
+      .catch((err) => {
+        console.log(err);
+        return next({
           status: 500,
           errors: { request: "server failed to respond :(" },
           message: "registration failed",
-        })
-      );
+        });
+      });
 
     function createNewUser() {
       const { firstName, lastName, email } = req.body;
       return {
+        username: firstName + Math.floor(Math.random() * 10000),
         firstName,
         lastName,
         email,
@@ -97,7 +99,7 @@ export default class AuthController {
       res.json({
         data,
         errors: null,
-        message: "Welcome back agba boss :)",
+        message: "Welcome back :)",
       });
     }
   }

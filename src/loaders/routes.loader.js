@@ -2,6 +2,7 @@ import cors from "cors";
 import session from "express-session";
 import passport from "passport";
 import connectStore from "connect-mongo";
+import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import apiRoutes from "../routes";
@@ -38,8 +39,8 @@ export default function loadRoutes(app, c) {
         cookie: {
           domain: "lethouz.netlify.app",
           sameSite: true,
-          secure: process.env.NODE_ENV === "production",
-          maxAge: 1000 * 60 * 60 * 3,
+          secure: false, //process.env.NODE_ENV === "production",
+          maxAge: 1000 * 60 * 60 * 24, // set to 2 hours
         },
         store: new MongoStore({
           mongooseConnection: mongoose.connection,
@@ -47,6 +48,12 @@ export default function loadRoutes(app, c) {
         }),
       })
     );
+
+    app.use(cookieParser());
+    app.use((req, res, next) => {
+      console.log("cookies", req.cookies);
+      next();
+    });
 
     app.use(passport.initialize());
     app.use(passport.session());
@@ -65,7 +72,7 @@ export default function loadRoutes(app, c) {
     });
 
     app.use(({ status, errors, message }, req, res, next) => {
-      console.log(error);
+      console.log(errors);
       res.status(status || 500).json({
         data: null,
         errors,
