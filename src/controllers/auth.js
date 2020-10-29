@@ -99,7 +99,7 @@ export default class AuthController {
       res.json({
         data,
         errors: null,
-        message: "Welcome back agba boss :)",
+        message: "Welcome back :)",
       });
     }
   }
