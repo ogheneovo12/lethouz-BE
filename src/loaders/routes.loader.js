@@ -65,7 +65,7 @@ export default function loadRoutes(app, c) {
     });
 
     app.use(({ status, errors, message }, req, res, next) => {
-      console.log(error);
+      console.log(errors);
       res.status(status || 500).json({
         data: null,
         errors,
