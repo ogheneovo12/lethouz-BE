@@ -9,13 +9,14 @@ export default class AuthController {
       .then(attachPasswordHash)
       .then(saveUserDetails)
       .then(sendCookie)
-      .catch(() =>
-        next({
+      .catch((err) => {
+        console.log(err);
+        return next({
           status: 500,
           errors: { request: "server failed to respond :(" },
           message: "registration failed",
-        })
-      );
+        });
+      });
 
     function createNewUser() {
       const { firstName, lastName, email } = req.body;
