@@ -1,5 +1,6 @@
 import { User, Apartment } from "../models";
 import { hashPassword, verifyPassword } from "../utils/utils";
+const userSelect = ["_id", "firstName", "lastName", "profileImage"];
 class UsersController {
   static async showUser(req, res, next) {
     try {
@@ -85,8 +86,15 @@ class UsersController {
   static async getSaved(req, res, next) {
     try {
       const { savedApartments } = await User.findById(req.session.user)
-        .populate("savedApartments")
-        .select("savedApartments");
+        .populate({
+          path: "savedApartments",
+          populate: {
+            path: "posted_by",
+            select:userSelect,
+          },
+        })
+        .exec();
+
       return res.json({
         data: savedApartments,
         errors: null,
@@ -117,7 +125,7 @@ class UsersController {
       await user.save();
       const apartment = await User.findById(req.session.user)
         .select("savedApartments")
-        .populate("savedApartments");
+        .populate({path:"savedApartments", populate:{path:"posted_by",select:userSelect}});
       return res.json({
         data: apartment,
         errors: null,
@@ -135,7 +143,9 @@ class UsersController {
 
   static async getApartments(req, res, next) {
     try {
-      const apartments = await Apartment.find({ posted_by: req.session.user });
+      const apartments = await Apartment.find({
+        posted_by: req.session.user,
+      }).populate({path:"posted_by", select:userSelect});
 
       return res.json({
         data: apartments,
