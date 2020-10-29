@@ -36,10 +36,10 @@ export default function loadRoutes(app, c) {
         saveUninitialized: false,
         resave: false,
         cookie: {
-          domain: "lethouz.netlify.app",
-          sameSite: true,
-          secure: process.env.NODE_ENV === "production",
-          maxAge: 1000 * 60 * 60 * 3,
+          // domain: "lethouz.netlify.app",
+          // sameSite: true,
+          // secure: process.env.NODE_ENV === "production",
+          // maxAge: 1000 * 60 * 60 * 3,
         },
         store: new MongoStore({
           mongooseConnection: mongoose.connection,
