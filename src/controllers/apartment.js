@@ -78,8 +78,6 @@ class ApartmentController {
     if (queryOptions.length) {
       query["$or"] = queryOptions;
     }
-
-    console.log(query);
     try {
       const apartments = await Apartment.find(query).populate(
         "posted_by",

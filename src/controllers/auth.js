@@ -63,7 +63,8 @@ export default class AuthController {
       .then(comparePassword)
       .then(endOnPasswordMismatch)
       .then(sendResponse)
-      .catch((request) => {
+      .catch((err) => {
+        console.log(err.message);
         return next({
           status: 400,
           errors: {
@@ -105,13 +106,11 @@ export default class AuthController {
   }
 
   static logout(req, res, next) {
-    req.session.destroy(function (e) {
-      req.logout();
-      res.json({
-        data: null,
-        errors: null,
-        message: "sorry to see you go :(",
-      });
+    req.session.destroy();
+    return res.json({
+      data: null,
+      errors: null,
+      message: "sorry to see you go :(",
     });
   }
 }
