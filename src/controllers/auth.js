@@ -21,6 +21,7 @@ export default class AuthController {
     function createNewUser() {
       const { firstName, lastName, email } = req.body;
       return {
+        username: firstName + Math.floor(Math.random() * 10000),
         firstName,
         lastName,
         email,
