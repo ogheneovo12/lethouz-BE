@@ -21,10 +21,21 @@ export default function loadRoutes(app, c) {
     app.use(
       cors({
         credentials: true,
-        origin:
-          process.env.NODE_ENV == "development"
-            ? "http://localhost:3000"
-            : "https://lethouz.netlify.app",
+        origin: (origin, callback) => {
+          if (
+            ["http://localhost:3000", "https://lethouz.netlify.app"].indexOf(
+              origin
+            ) !== -1
+          ) {
+            callback(null, true);
+          } else {
+            callback(new Error("Not Allowed by CORS"));
+          }
+        },
+        //process.env.NODE_ENV == "development"
+        //?
+        //"http://localhost:3000",
+        //: "https://lethouz.netlify.app",
       })
     );
     app.use(bodyParser.urlencoded({ extended: false }));
