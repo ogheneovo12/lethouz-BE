@@ -19,7 +19,7 @@ const {
 
 export const port = process.env.PORT || 9000;
 
-export const secretKey = SECRET_KEY ||"secret";
+export const secretKey = SECRET_KEY || "secret";
 
 export const dbURL =
   process.env.NODE_ENV == "development"
