@@ -1,2 +1,3 @@
-# lethouz-BE
-backend remote repo for lethouz
+## LETHOUZ BACKEND REPOSITORY
+
+Development URL: https://lethouz.herokuapp.com/api
