@@ -1,12 +1,14 @@
 import { User, Apartment } from "../models";
 import { hashPassword, verifyPassword } from "../utils/utils";
-const userSelect = ["_id", "firstName", "lastName", "profileImage"];
+const userSelect = ["_id", "firstName", "lastName", "profileImage","username"];
 class UsersController {
   static async showUser(req, res, next) {
     try {
+      console.log(req.session.user)
       const data = await User.findById(req.session.user).populate(
         "savedApartments"
       );
+      console.log(data);
       if (!data)
         return next({
           status: 400,
