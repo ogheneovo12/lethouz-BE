@@ -36,7 +36,7 @@ class ApartmentController {
     try {
       const apartment = await Apartment.findById(req.params.id).populate(
         "posted_by",
-        "firstName lastName email"
+        "email lastname username"
       );
       if (!apartment) throw new Error("invalid apartment id");
       res.json({
@@ -81,7 +81,7 @@ class ApartmentController {
     try {
       const apartments = await Apartment.find(query).populate(
         "posted_by",
-        "firstName lastName email"
+        "email lastname username"
       );
       res.json({
         data: apartments,
