@@ -65,10 +65,10 @@ export function loginValidator(req, res, next) {
   data.password = !isEmpty(req.body.password) ? req.body.password : "";
 
   if (validator.isEmpty(data.email) || !validator.isEmail(data.email)) {
-    errors.email = "Invalid login credentials";
+    errors.request = "Invalid login credentials";
   }
   if (validator.isEmpty(data.password)) {
-    errors.password = "invalid login credentials";
+    errors.request = "invalid login credentials";
   }
   if (!isEmpty(errors))
     return next({ status: 400, errors, message: "login failed" });
