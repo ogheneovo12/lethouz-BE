@@ -8,7 +8,6 @@ class UsersController {
       const data = await User.findById(req.session.user).populate(
         "savedApartments"
       );
-      console.log(data);
       if (!data)
         return next({
           status: 400,
