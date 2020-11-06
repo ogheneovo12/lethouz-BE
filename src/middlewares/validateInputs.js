@@ -1,6 +1,7 @@
 //IMPORT MOODULES
-const validator = require("validator");
-const isEmpty = require("is-empty");
+import validator from "validator";
+import isEmpty from "is-empty";
+import joi from "joi";
 
 /**
  *
@@ -103,86 +104,51 @@ export function updateProfileValidator(req, res, next) {
   next();
 }
 
-export function createApartmentValidator(req, res, next) {
-  const { body } = req;
-  const errors = {};
-  const data = {};
+const createApartmentSchema = joi.object().keys({
+  title: joi.string().required(),
+  type: joi.string().required(),
+  price: joi.number().required(),
+  currency: joi.string().required(),
+  currentState: joi.string().required().valid("new", "furnished", "serviced"),
+  description: joi.string().required(),
+  details: joi.object().keys({
+    bathrooms: joi.number().required(),
+    toilets: joi.number().required(),
+    bedrooms: joi.number().required(),
+    size: joi.number().required(),
+  }),
+  address: joi.object().keys({
+    address: joi.string().required(),
+    state: joi.string().required(),
+    lga: joi.string().required(),
+  }),
+});
 
-  data.title = !isEmpty(body.title) ? body.title : "";
-  data.purpose = !isEmpty(body.purpose) ? body.purpose : "";
-  data.type = !isEmpty(body.type) ? body.type : "";
-  data.price = !isEmpty(body.price) ? String(body.price) : "";
-  data.currentState = !isEmpty(body.currentState) ? body.currentState : "";
-  data.description = !isEmpty(body.description) ? body.description : "";
-
-  if (validator.isEmpty(data.title)) {
-    errors.title = "Invalid title";
-  }
-  if (validator.isEmpty(data.price) || !validator.isInt(data.price)) {
-    errors.price = "Invalid price";
-  }
-  if (validator.isEmpty(data.currentState)) {
-    errors.currentState = "current state required";
-  } else {
-    if (
-      data.currentState != "new" &&
-      data.currentState != "furnished" &&
-      data.currentState != "serviced"
-    )
-      errors.currentState = "invalid current state";
-  }
-  if (validator.isEmpty(data.purpose) || !validator.isAlpha(data.purpose)) {
-    errors.purpose = "Invalid purpose";
-  }
-  if (validator.isEmpty(data.type) || !validator.isAlpha(data.type)) {
-    errors.type = "Invalid type";
-  }
-  if (!body.details) {
-    errors.details = "house details required";
-  } else {
-    const invalid = [
-      body.details.bedrooms,
-      body.details.bathrooms,
-      body.details.toilets,
-      body.details.size,
-    ].some((prop) => prop == "" || !validator.isInt(prop.toString()));
-    if (invalid) {
-      errors.details = "invalid house details";
-    } else {
-      const { bedrooms, bathrooms, toilets, size } = body.details;
-      data.details = { bedrooms, bathrooms, toilets, size };
+export async function createApartmentValidator(req, res, next) {
+  try {
+    req.body = await createApartmentSchema.validateAsync(req.body, {
+      abortEarly: false,
+    });
+    req.body.geometry = {};
+    next();
+  } catch ({ details }) {
+    const errors = {};
+    for (let { message, path } of details) {
+      message = message.split('"').splice(1);
+      if (message[0].split(".").length > 1) {
+        let [obj, prop] = message[0].split(".");
+        if (!errors[obj]) errors[obj] = {};
+        errors[obj][prop] = prop + message[1];
+      } else {
+        errors[message[0]] = message.join();
+      }
     }
+    next({
+      status: 400,
+      errors,
+      message: "validation failed",
+    });
   }
-  if (!body.address) {
-    errors.address = "house address required";
-  } else {
-    const invalid = [
-      body.address.lga,
-      body.address.state,
-      body.address.address,
-    ].some((prop) => validator.isEmpty(prop));
-    if (invalid) {
-      errors.address = "invalid house location";
-    } else {
-      const { lga, state, address } = body.address;
-      data.address = { lga, state, address };
-    }
-  }
-  if (!isEmpty(errors))
-    return next({ status: 400, errors, message: "create apartment" });
-  data.details = sanitize(data.details);
-  data.address = sanitize(data.address);
-  const others = sanitize({
-    title: data.title,
-    currentState: data.currentState,
-    price: data.price,
-    description: data.description,
-    purpose: data.purpose,
-    type: data.type,
-  });
-  req.body = { ...others, details: data.details, address: data.address };
-  req.body.geometry = {};
-  next();
 }
 
 function sanitize(data) {

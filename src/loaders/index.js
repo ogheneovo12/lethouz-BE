@@ -13,7 +13,8 @@ const app = express();
 const loadAll = (app) =>
   Promise.all([dbConnect(app, config), routeLoader(app, config)])
     .then(passportLoader(app, config))
-    .then(() => console.log(`resources have been loaded`));
+    .then(() => console.log(`resources have been loaded`))
+    .catch(process.exit);
 
 app.loadAll = loadAll;
 
