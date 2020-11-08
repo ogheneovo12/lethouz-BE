@@ -1,6 +1,5 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-import { secretKey } from "../config";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export function createError(status, message) {
   return [status, errors, message];
@@ -26,4 +25,5 @@ export function formatJoiError({ details }) {
       errors[message[0]] = message.join();
     }
   }
+  return Object.values(errors).length == 0 ? null : errors;
 }

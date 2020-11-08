@@ -5,11 +5,12 @@ import { Apartment } from "../models/index";
 
 export async function getCoordinates(req, res, next) {
   try {
+    const { address, state, lga, country } = req.body.address;
     const result = await axios.get(
       "https://maps.googleapis.com/maps/api/geocode/json",
       {
         params: {
-          address: `${req.body.address.address},${req.body.address.state}`,
+          address: `${address},${lga},${state},${country}`,
           key: process.env.GOOGLE_GEOAPI_KEY,
         },
       }

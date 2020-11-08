@@ -142,6 +142,7 @@ export async function createApartmentValidator(req, res, next) {
     req.body = await createApartmentSchema.validateAsync(req.body, {
       abortEarly: false,
     });
+    req.body.geometry = {};
     next();
   } catch (err) {
     const errors = formatJoiError(err);
