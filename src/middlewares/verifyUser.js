@@ -40,8 +40,10 @@ export async function verifyOldUser(req, res, next) {
 
 export async function verifySeller(req, res, next) {
   try {
-    const isUser = await User.findOne({ _id: req.session.user, isSeller: 1 });
-    req.body.published = Number(isUser);
+    req.body.published = await User.exists({
+      _id: req.session.user,
+      isSeller: 1,
+    });
     next();
   } catch (err) {
     next({

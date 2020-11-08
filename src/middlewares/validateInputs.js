@@ -2,6 +2,8 @@
 import validator from "validator";
 import isEmpty from "is-empty";
 import joi from "joi";
+import types from "../seeders/dropdowns";
+import { formatJoiError } from "../utils/utils";
 
 /**
  *
@@ -95,9 +97,6 @@ export function updateProfileValidator(req, res, next) {
   if (validator.isEmpty(data.lastName) || !validator.isAlpha(data.lastName)) {
     errors.lastName = "invalid last name";
   }
-  // if (validator.isEmpty(data.profileImage)) {
-  //   errors.photo = "profile photo required";
-  // }
   if (!isEmpty(errors))
     return next({ status: 400, errors, message: "profile update failed" });
   req.body = sanitize(data);
@@ -106,8 +105,20 @@ export function updateProfileValidator(req, res, next) {
 
 const createApartmentSchema = joi.object().keys({
   title: joi.string().required(),
-  type: joi.string().required(),
+  type: joi
+    .string()
+    .required()
+    .valid(
+      ...[
+        ...types["coworking space"],
+        ...types.house,
+        ...types.commercial,
+        ...types.land,
+        ...types.apartment,
+      ]
+    ),
   price: joi.number().required(),
+  purpose: joi.string().required().valid(),
   currency: joi.string().required(),
   currentState: joi.string().required().valid("new", "furnished", "serviced"),
   description: joi.string().required(),
@@ -121,7 +132,9 @@ const createApartmentSchema = joi.object().keys({
     address: joi.string().required(),
     state: joi.string().required(),
     lga: joi.string().required(),
+    country: joi.string().required(),
   }),
+  attachments: joi.array(),
 });
 
 export async function createApartmentValidator(req, res, next) {
@@ -129,20 +142,9 @@ export async function createApartmentValidator(req, res, next) {
     req.body = await createApartmentSchema.validateAsync(req.body, {
       abortEarly: false,
     });
-    req.body.geometry = {};
     next();
-  } catch ({ details }) {
-    const errors = {};
-    for (let { message, path } of details) {
-      message = message.split('"').splice(1);
-      if (message[0].split(".").length > 1) {
-        let [obj, prop] = message[0].split(".");
-        if (!errors[obj]) errors[obj] = {};
-        errors[obj][prop] = prop + message[1];
-      } else {
-        errors[message[0]] = message.join();
-      }
-    }
+  } catch (err) {
+    const errors = formatJoiError(err);
     next({
       status: 400,
       errors,

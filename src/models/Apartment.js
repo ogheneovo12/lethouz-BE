@@ -52,15 +52,6 @@ const ApartmentSchema = new Schema(
       type: String,
       required: true,
     },
-    posted_by: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    currentState: {
-      type: String,
-      required: true,
-    },
     purpose: {
       type: String,
       required: true,
@@ -73,6 +64,18 @@ const ApartmentSchema = new Schema(
       type: DetailsSchema,
       required: true,
     },
+    currentState: {
+      type: String,
+      required: true,
+    },
+    address: {
+      type: AddressSchema,
+      required: true,
+    },
+    currency: {
+      type: String,
+      required: true,
+    },
     price: {
       type: Number,
       required: true,
@@ -81,21 +84,22 @@ const ApartmentSchema = new Schema(
       type: String,
       required: false,
     },
-    sold: {
-      type: Boolean,
-      default: false,
-    },
-    address: {
-      type: AddressSchema,
-      required: true,
-    },
     attachments: {
       type: [{ type: String }],
       required: false,
     },
+    sold: {
+      type: Boolean,
+      default: false,
+    },
     geometry: GeoSchema,
     published: {
-      type: Number,
+      type: Boolean,
+      default: false,
+    },
+    posted_by: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
   },

@@ -1,4 +1,3 @@
-import opencage from "opencage-api-client";
 import axios from "axios";
 import validator from "validator";
 import empty from "is-empty";
@@ -17,7 +16,7 @@ export async function getCoordinates(req, res, next) {
     );
     const geometry = Object.values(
       result.data.results[0].geometry.location
-    ).reverse();
+    ).reverse(); // longitude ,latitude
     req.body.geometry.coordinates = geometry;
     next();
   } catch (err) {

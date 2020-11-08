@@ -1,5 +1,5 @@
 export default {
-  purpose: ["rent", "short let"],
+  purpose: ["rent", "short let", "sale"],
   types: ["house", "apartment", "commercial property", "co-working space"],
   "coworking space": ["meeting room", "private office", "desk", "workstation"],
   commercial: [
