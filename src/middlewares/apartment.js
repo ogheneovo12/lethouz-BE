@@ -1,4 +1,3 @@
-import opencage from "opencage-api-client";
 import axios from "axios";
 import validator from "validator";
 import empty from "is-empty";
@@ -6,18 +5,19 @@ import { Apartment } from "../models/index";
 
 export async function getCoordinates(req, res, next) {
   try {
+    const { address, state, lga, country } = req.body.address;
     const result = await axios.get(
       "https://maps.googleapis.com/maps/api/geocode/json",
       {
         params: {
-          address: `${req.body.address.address},${req.body.address.state}`,
+          address: `${address},${lga},${state},${country}`,
           key: process.env.GOOGLE_GEOAPI_KEY,
         },
       }
     );
     const geometry = Object.values(
       result.data.results[0].geometry.location
-    ).reverse();
+    ).reverse(); // longitude ,latitude
     req.body.geometry.coordinates = geometry;
     next();
   } catch (err) {

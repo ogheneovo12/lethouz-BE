@@ -1,0 +1,33 @@
+export default {
+  purpose: ["rent", "short let", "sale"],
+  types: ["house", "apartment", "commercial property", "co-working space"],
+  "coworking space": ["meeting room", "private office", "desk", "workstation"],
+  commercial: [
+    "show room",
+    "shop",
+    "space in mall",
+    "warehouse",
+    "church",
+    "event centre",
+    "factory",
+    "office space",
+    "hotel",
+    "guest house",
+    "farmland",
+  ],
+  apartment: [
+    "self contain",
+    "mini-flat",
+    "boys quarters",
+    "penthouse",
+    "studio apartment",
+  ],
+  house: ["bungalow", "duplex", "blocks of flats", "maisonette"],
+  land: [
+    "residential",
+    "mixed-use ",
+    "serviced residential",
+    "joint-venture",
+    "industrial",
+  ],
+};

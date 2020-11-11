@@ -81,7 +81,7 @@ class ApartmentController {
     try {
       const apartments = await Apartment.find(query).populate(
         "posted_by",
-        "firstName lastName email"
+        "firstName lastName email username"
       );
       res.json({
         data: apartments,
