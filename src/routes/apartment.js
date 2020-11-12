@@ -25,8 +25,7 @@ apartmentRouter.get("/:id", ApartmentController.findOne); //done
 apartmentRouter.put(
   "/:id",
   verifyUser,
-  updateApartmentValidator,
-  //getCoordinates,
+  createApartmentValidator,
   ApartmentController.update
 ); //need final testing
 export default apartmentRouter;
