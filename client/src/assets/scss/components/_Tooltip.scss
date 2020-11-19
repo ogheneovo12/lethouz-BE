@@ -1,0 +1,54 @@
+.tooltip {
+  height: 40rem;
+  display: inline-block;
+  width: 25rem;
+  background: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  position: relative;
+  box-shadow: $menu-shadow;
+  // margin: 50px auto;
+  .close {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+  }
+  #{&}__image {
+    height: 40%;
+    border-radius: inherit;
+    background: linear-gradient(
+      to right,
+      rgba($primary-color, 0.3),
+      rgba($primary-color, 0.5)
+    );
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+  #{&}__property {
+    margin-top: 1rem;
+    display: flex;
+    margin-bottom: 1rem;
+    justify-content: space-between;
+    hgroup p {
+      color: #828282;
+      font-size: 0.9rem;
+    }
+    .price {
+      align-self: center;
+      font-size: 1.4rem;
+      color: $primary-color;
+      font-weight: 700;
+    }
+  }
+  #{&}__cta {
+    text-align: center;
+    @include flex-center;
+
+    a {
+      margin: 0;
+      margin-top: 2rem;
+    }
+  }
+}

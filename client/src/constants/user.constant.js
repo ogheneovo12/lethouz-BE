@@ -1,0 +1,13 @@
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS",
+  LOGIN_SUCCESS = "LOGIN_SUCCESS",
+  REGISTERATION_SUCCESS = "REGISTERATION_SUCCESS",
+  CLEAR_FEEDBACK = "CLEAR_FEEDBACK",
+  LOGIN_REQUEST = "LOGIN_REQUEST",
+  LOGOUT_REQUEST = "LOGOUT_REQUEST",
+  ERROR = "ERROR",
+  FEEDBACK = "FEEDBACK",
+  roleType = ["USER", "ADMIN"], //0,1
+  USER_API_BASEURL =
+    process.env.REACT_APP_LIVE_DEPLOY === "LIVE_DEPLOY"
+      ? "https://lethouz.herokuapp.com/api/"
+      : "http://localhost:9000/api/";

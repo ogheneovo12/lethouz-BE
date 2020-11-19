@@ -1,0 +1,127 @@
+@mixin flex-center($direction: row) {
+  display: flex;
+  flex-flow: $direction;
+  justify-content: center;
+  align-items: center;
+}
+@mixin flex-btw($direction: row, $wrap: nowrap) {
+  display: flex;
+  flex-flow: $direction;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: $wrap;
+}
+@mixin flex-even($direction: row, $wrap: nowrap) {
+  display: flex;
+  flex-flow: $direction;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: $wrap;
+}
+
+// Media Queries
+@mixin media-md {
+  @media screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin media-sm-md {
+  @media screen and (max-width: 600px) {
+    @content;
+  }
+}
+@mixin media-lg {
+  @media screen and (min-width: 1024px) {
+    @content;
+  }
+}
+@mixin media-xl {
+  @media screen and (min-width: 1600px) {
+    @content;
+  }
+}
+@mixin media-sm {
+  @media screen and (max-width: 360px) {
+    @content;
+  }
+}
+@include media-sm-md {
+  body {
+    font-size: 10px;
+  }
+}
+
+@mixin fade-transition($element: all) {
+  -webkit-transition: $element 0.3s ease-in-out;
+  -moz-transition: $element 0.3s ease-in-out;
+  -ms-transition: $element 0.3s ease-in-out;
+  -o-transition: $element 0.3s ease-in-out;
+  transition: $element 0.3s ease-in-out;
+}
+
+@mixin swiper-nav {
+  .swiper-button-prev,
+  .swiper-button-next,
+  .swiper-button-nextswiper-button-disabled,
+  .swiper-button-prevswiper-button-disabled {
+    @content;
+  }
+}
+
+@mixin menu-style {
+  position: absolute;
+  width: auto;
+  box-shadow: $menu-shadow;
+  padding: 10px 0;
+  z-index: 50;
+  background: #fff;
+  margin-top: 25px;
+  border-radius: 6px;
+  @include fade-transition;
+  transform-origin: top;
+  z-index: 6;
+  float: left;
+  li {
+    padding: 10px 20px;
+    &:hover {
+      background: $borders_and_disabled;
+    }
+  }
+}
+
+@mixin styledScrollbar {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #fff;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgb(168, 159, 159);
+    border-radius: 1rem;
+  }
+}
+
+@mixin textInputs {
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  input[type="number"] {
+    @content;
+  }
+}
+@mixin textInputsFocus {
+  input[type="text"]:focus,
+  input[type="password"]:focus,
+  input[type="email"]:focus,
+  input[type="number"] {
+    @content;
+  }
+}
+input[type="checkbox"].input-error {
+  outline: 2px solid $error !important;
+}

@@ -9,7 +9,7 @@
     "test-build": "yarn build && yarn start",
     "build": "yarn build-server && yarn build-client",
     "build-server": "rm -rf build && babel src --out-dir dist",
-    "build-client": "cd client && yarn build"
+    "build-client": "cd client && yarn install && yarn build"
   },
   "repository": {
     "type": "git",

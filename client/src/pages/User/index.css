@@ -1,0 +1,3 @@
+.account > div {
+  flex-basis: calc(calc(50% - 100%) * 999);
+}

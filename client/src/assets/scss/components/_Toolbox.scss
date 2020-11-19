@@ -1,0 +1,69 @@
+// TOOLBOX
+.toolbox {
+  width: 20rem;
+  min-height: 5rem;
+  border-radius: 20rem;
+  padding: 0.6rem 0;
+  // box-shadow: $shadow;
+  background: #fff;
+  @include flex-even;
+ @include media-sm-md{
+  background-color: transparent;
+   width: auto;
+ }
+  #{&}__tool {
+    font-size: 1.5rem;
+    color: $secondary-text-color;
+    &.open-menu{
+      height:30px;
+      width: 30px;
+      border: 1px solid #000;
+      border-radius: 5px;
+      font-size: 14px;
+      text-align: center;
+      padding:5px 2px;
+      background-color: #fff;
+    }
+    &.avatar {
+      display: block;
+      height: 4rem;
+      width: 4rem;
+      border-radius: 100%;
+      background: $primary-color;
+      .gravplace {
+        display: inline-block;
+        margin-left: 13px;
+        margin-top: 10px;
+        color: #fff;
+      }
+    }
+    &.notf {
+      position: relative;
+    }
+    &.notf::after {
+      content: "";
+      position: absolute;
+      font-size: 0.3rem;
+      top: -10px;
+      right: 0px;
+      padding: 0.2rem;
+      background: $success;
+      border-radius: 100%;
+    }
+    @include media-sm-md {
+      &.avatar,
+      &.notf,
+      &.like {
+        display: none;
+      }
+    }
+  }
+  @media (max-width: 343px) {
+    min-height: 3rem;
+    //margin-left: 2rem;
+    height: 4rem;
+  }
+  // @media (max-width: 380px) {
+  //   max-width: fit-content;
+  // }
+}

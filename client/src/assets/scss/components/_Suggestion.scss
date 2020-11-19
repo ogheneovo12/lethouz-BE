@@ -1,0 +1,85 @@
+.suggestion {
+  height: 32rem;
+  display: inline-block;
+  background: #fff;
+  margin: 1rem;
+  max-width: 300px;
+  border-radius: 1rem;
+  box-shadow: $shadow;
+  transition: all 0.5s ease-in-out;
+  animation: fadein 0.5s 1 ease-in-out;
+  padding-bottom: 10px;
+  text-align: left;
+  #{&}__image {
+    height: 70%;
+    img {
+      border-radius: 1rem 1rem 0px 0px;
+    }
+  }
+  #{&}__info {
+    height: 30%;
+    padding: 1rem;
+    h5 {
+      font-size: calc(0.7rem + 1vw);
+      font-size: 2em;
+      margin-bottom: 10px;
+      @media (max-width: 702px) {
+        font-size: 18px;
+      }
+    }
+    .location {
+      font-size: 1.2rem;
+      max-width: 70%;
+      word-break: break-word;
+      line-height: 15px;
+      display: flex;
+      margin-bottom: 10px;
+      span {
+        margin-right: 0.5rem;
+        height: 100%;
+      }
+      .icon {
+        padding-left: 10px;
+      }
+    }
+    .price {
+      font-size: 1.5rem;
+    }
+  }
+  @keyframes fadein {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+.saved {
+  padding: 10px 70px;
+
+  .Property_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    @media (max-width: 500px) {
+      justify-content: center;
+    }
+
+    .suggestion {
+      max-width: 23%;
+      @media (max-width: 1240px) {
+        max-width: 30%;
+      }
+      @include media-md {
+        max-width: 45%;
+      }
+      @media (max-width: 500px) {
+        max-width: 90%;
+      }
+    }
+  }
+  @media (max-width: 1000px) {
+    padding: 10px;
+  }
+}

@@ -1,0 +1,76 @@
+.alert {
+  min-width: 50%;
+  width: 60%;
+  margin: 30px 0;
+  padding: 20px;
+  background: #fff;
+  box-shadow: $shadow;
+  border-radius: 5px;
+  position: relative;
+  border-left: 5px solid $info;
+  @include media-md {
+    width: 100%;
+  }
+  p {
+    font-size: 12px;
+  }
+  span.delete {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  &.error {
+    border-color: $error;
+    p {
+      color: $error !important;
+    }
+  }
+  &.success {
+    border-color: $success;
+    p {
+      color: $success !important;
+    }
+  }
+  &.warning {
+    border-color: $warning;
+    p {
+      color: $warning !important;
+    }
+  }
+  &.bl,
+  &.tr {
+    position: fixed;
+    z-index: 700;
+    min-width: 200px;
+    width: 300px;
+  }
+  &.bl {
+    bottom: 5px;
+    left: 5px;
+  }
+  &.tr {
+    top: 50px;
+    left: 10px;
+    animation: fromtop 0.3s ease-in;
+    transform: translateX(calc(200px -50%));
+  }
+  @include media-sm-md {
+    &.bl,
+    &.tr {
+      width: 90%;
+    }
+  }
+}
+
+@keyframes fromtop {
+  from {
+    opacity: 0;
+    top: -30px;
+  }
+  to {
+    top: 50px;
+    opacity: 1;
+  }
+}

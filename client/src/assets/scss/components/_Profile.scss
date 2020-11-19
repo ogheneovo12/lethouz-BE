@@ -1,0 +1,127 @@
+.profile {
+  padding: 0;
+  #{&}__header {
+    background: url("/img/profileHeader.png") 0 / cover;
+    height: 30vh;
+  }
+  .card_wrap {
+    width: 75%;
+    margin: 0 auto;
+    display: flex;
+  }
+  #{&}__card {
+    width: 300px;
+    background: #fff;
+    height: 500px;
+    float: left;
+    flex-shrink: 0;
+    box-shadow: $shadow;
+    margin-top: -30px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    padding: 30px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    @include media-sm {
+      width: 100%;
+      &__badge {
+        margin-top: 70px;
+        a {
+          font-size: 10px;
+          padding: 10px 2px;
+        }
+      }
+    }
+    &__picture {
+      width: 130px;
+      height: 130px;
+      text-align: center;
+    }
+    &__badge {
+      margin-top: 70px;
+      a {
+        display: block;
+        margin: 0 auto;
+        font-weight: 700;
+        font-size: 12px;
+      }
+    }
+  }
+  @include media-md {
+    padding: 0;
+    &__info {
+      display: none;
+    }
+    .card_wrap {
+      @include flex-center;
+    }
+  }
+}
+
+.account-wrapper {
+  padding: 50px 70px;
+  @include media-sm-md {
+    padding: 50px 5px;
+  }
+  @include media-md {
+    padding: 50px 20px;
+  }
+  hgroup {
+    p {
+      font-size: 12px;
+      span {
+        color: pink;
+      }
+      a {
+        color: $primary-color;
+      }
+    }
+  }
+  & > .account {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 10px;
+    & > div {
+      min-width: calc(32% - 5px * 2);
+      max-width: 100%;
+      flex-grow: 0;
+      box-shadow: $shadow;
+      padding: 20px;
+      //moved flex-basis into a seperate css file(in js account pages) cause sass is computing the value instead of returning calc
+      //flex-basis: calc(calc(50% - 100%) * 999);
+      border-radius: 10px;
+      margin: 5px;
+      min-height: 100px;
+      span {
+        color: $primary-color;
+        font-size: 30px;
+        margin-bottom: 10px;
+      }
+      @include media-sm-md {
+        min-width: 45%;
+      }
+      @media (max-width: 400px) {
+        text-align: center;
+        p {
+          display: none;
+        }
+      }
+      @media (max-width: 350px) {
+        flex-basis: 100%;
+      }
+    }
+  }
+}
+
+.notfpage {
+  padding: 40px 60px;
+  width: 100%;
+  h3 {
+    margin-bottom: 30px;
+  }
+  @include media-md {
+    padding: 40px 10px;
+  }
+}

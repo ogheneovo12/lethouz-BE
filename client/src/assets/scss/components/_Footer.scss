@@ -1,0 +1,144 @@
+footer {
+  bottom: 0;
+  min-height: 50vh;
+  width: 100%;
+  background: #121212;
+  font-size: 1.5rem;
+  color: #fff;
+  display: flex;
+  padding: 8rem 0;
+  color: #fff;
+
+  @include media-lg {
+    padding: 8rem;
+  }
+
+  .info {
+    padding: 0 4rem;
+    width: 40%;
+    p {
+      margin: 1rem 0;
+      color: #fff;
+      font-size: 1.5rem;
+    }
+    .social i {
+      font-size: 1.3rem;
+      margin-right: 1rem;
+    }
+    &__logo {
+      img {
+        width: 150px;
+      }
+    }
+  }
+  .nav {
+    display: flex;
+    width: 60%;
+    ul {
+      width: 50%;
+      padding: 0 30px;
+      .title {
+        position: relative;
+        display: inline-block;
+        padding: 0.5rem 0;
+      }
+      .title:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 0.5rem;
+        width: 100%;
+        background-color: $primary-color;
+      }
+      li {
+        padding: 1rem;
+      }
+    }
+  }
+  @include media-md {
+    flex-wrap: wrap;
+    text-align: center;
+    .nav,
+    .info {
+      width: 100%;
+    }
+    .nav {
+      flex-wrap: wrap;
+      ul{
+        width: 100%;
+      }
+    }
+  }
+}
+
+.newsletter {
+  width: 100%;
+  min-height: 10vh;
+  background: $primary-color;
+  color: #fff;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  text-align: center;
+  .newstext h3 {
+    font-size: 1.8rem;
+    line-height: 2rem;
+  }
+  .form-wrap {
+    width: 60%;
+    max-width: 600px;
+  }
+  p {
+    color: #fff;
+    font-size: 13px;
+  }
+
+  form {
+    width: 100%;
+    padding: 0 2rem;
+    margin: 1rem 0;
+    .form-control {
+      display: flex;
+      height: 50px;
+      width: 100%;
+      input {
+        width: 70%;
+        height: 100%;
+        border: none;
+        padding: 0 1rem;
+        border-radius: 1rem 0px 0px 1rem;
+        margin: 0px;
+      }
+      button {
+        width: 30%;
+        height: 100%;
+        border-radius: 0px 1rem 1rem 0px;
+        background: $secondary-color;
+        border: none;
+        color: #fff;
+      }
+    }
+  }
+  @include media-lg {
+    flex-wrap: nowrap;
+    text-align: left;
+    padding: 5em;
+  }
+  @include media-md {
+    .form-wrap {
+      width: 100%;
+    }
+    .newstext h3 {
+      font-size: 2rem;
+      line-height: 2rem;
+    }
+  }
+  @media (max-width: 240px) {
+    button {
+      font-size: 10px;
+    }
+  }
+}
