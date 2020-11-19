@@ -2,11 +2,11 @@ import cors from "cors";
 import session from "express-session";
 import passport from "passport";
 import connectStore from "connect-mongo";
-import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import apiRoutes from "../routes";
 import * as config from "../config";
+import { join } from "path";
 const MongoStore = connectStore(session);
 
 /**
@@ -18,26 +18,14 @@ const MongoStore = connectStore(session);
 export default function loadRoutes(app, c) {
   return new Promise((resolve, reject) => {
     // cors and body parser setup
-    app.use(
-      cors({
-        credentials: true,
-        origin: (origin, callback) => {
-          if (
-            ["http://localhost:3000", "https://lethouz.netlify.app"].indexOf(
-              origin
-            ) !== -1
-          ) {
-            callback(null, true);
-          } else {
-            callback(new Error("Not Allowed by CORS"));
-          }
-        },
-      })
-    );
+    app.use(cors());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
-    app.use(cookieParser(config.secretKey));
+    // serve static files for react app
+    app.use(app.express.static(join(process.cwd(), "client/build")));
+
+    // session handling
     app.use(
       session({
         name: config.sessionName,
@@ -56,22 +44,15 @@ export default function loadRoutes(app, c) {
       })
     );
 
-    //app.use((req, res, next) => {
-    // console.log("Session", req.session);
-    // console.log(req.method, req.url);
-    // if (req.cookies) {
-    //   console.log("cookies", req.cookies);
-    // }
-    // if (req.signedCookies) {
-    //   console.log("signed cookies", req.signedCookies);
-    // }
-    //next();
-    //});
-
     app.use(passport.initialize());
     app.use(passport.session());
 
     app.use("/api", apiRoutes);
+    app.get("/*", (req, res, next) => {
+      // redirect to 404 handler if not xhr request
+      if (req.xhr) return next();
+      return res.sendFile(join(process.cwd(), "client/build/index.html"));
+    });
 
     // error handling routes
     app.use((req, res, next) => {
