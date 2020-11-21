@@ -4,7 +4,8 @@ config();
 
 const {
   SECRET_KEY,
-  MONGO_URI,
+  PROD_DB_URI,
+  DEV_DB_URI,
   SESSION_NAME,
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
@@ -21,10 +22,8 @@ export const port = process.env.PORT || 9000;
 
 export const secretKey = SECRET_KEY || "secret";
 
-export const dbURL =
-  process.env.NODE_ENV == "development"
-    ? "mongodb://127.0.0.1:27017/lethouz"
-    : MONGO_URI;
+export const dbURL = PROD_DB_URI;
+//process.env.NODE_ENV == "development" ? DEV_DB_URI : PROD_DB_URI;
 
 export const sessionName = SESSION_NAME || "lethouz";
 

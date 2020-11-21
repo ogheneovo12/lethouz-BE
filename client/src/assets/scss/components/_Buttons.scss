@@ -1,0 +1,52 @@
+%btn {
+  display: inline-block;
+  padding: 10px 30px;
+  color: #fff;
+  border: none;
+  margin: 1rem;
+  font-size: 10px;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 5px;
+  &.block{
+    display: block;
+  }
+}
+.btn-l {
+  width: 100%;
+}
+.btn-md {
+  width: 70%;
+}
+.btn {
+  @extend %btn;
+}
+.w-full {
+  width: 100%;
+}
+.w-md {
+  width: 50%;
+}
+
+.btn-primary {
+  @extend %btn;
+  background-color: $primary-color;
+}
+.btn-primary-invert {
+  @extend %btn;
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  background-color: transparent;
+}
+.btn-full {
+  width: 100%;
+}
+button:disabled {
+  opacity: 0.1;
+}
+.btn-ghost {
+  @extend %btn;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  color: #e0e0e0;
+}

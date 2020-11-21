@@ -1,0 +1,28 @@
+.notfound{
+    min-height:100vh;
+    padding:10px 20px 100px 20px;
+    text-align: center;
+    svg{
+        @include media-sm-md{
+            max-width:300px;
+        }
+        @include media-sm{
+            width: 100%;
+        }
+    }
+    h1{
+         font-weight:700;
+         line-height: 1.5;
+         font-size: calc(14px + 4vw);
+        &::first-letter,.last{
+          color:$primary-color !important;
+        }
+    }
+    .message{
+        font-size: calc(14px + 2vw);
+        line-height: 1.1;
+        max-width: 700px;
+        font-weight: 60;
+    }
+    @include flex-center(column);
+}

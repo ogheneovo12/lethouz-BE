@@ -1,0 +1,209 @@
+.property {
+  padding: 50px;
+  #{&}__highlight {
+    display: flex;
+    width: 100%;
+    min-height: 30rem;
+    margin-top: 5rem;
+  }
+  
+  #{&}__details {
+    flex: 2;
+    padding: 10px 70px 10px 10px;
+    margin: 0 auto;
+    margin-top: 20px;
+    p#savedHeart{
+      font-size: 14px;
+      i{
+        color:rgb(250, 104, 129) !important;
+      }
+    
+    }
+    @media screen and (max-width: 847px) {
+      padding-right: 10px;
+    }
+
+    &__seller {
+      @include flex-btw;
+      padding-bottom: 20px;
+      @include media-sm {
+        h4 {
+          font-size: 20px;
+          line-height: 2rem;
+        }
+      }
+      ul {
+        display: flex;
+        font-size: 1.2rem;
+        flex-wrap: wrap;
+        li {
+          color: $primary-color !important;
+          list-style: circle;
+          list-style-position: inside;
+          padding-right: 5px;
+        }
+      }
+    }
+    &__features {
+      .feature_wrap p {
+        display: inline-block;
+        margin: 20px;
+        font-size: 20px;
+        color: #000;
+        text-transform: capitalize;
+        span {
+          color: $inactive;
+          margin-right: 10px;
+          &.point {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: $primary-color;
+          }
+        }
+      }
+    }
+  }
+
+  #{&}__actions {
+    flex: 1;
+    margin-top: 5rem;
+    .action_wrapper {
+      width: 90%;
+      min-height: 150px;
+      padding: 17px;
+      box-shadow: $menu-shadow;
+      margin: 10px 0 0 10px;
+      border-radius: 5px;
+      @include flex-center(column);
+    }
+  }
+
+  @media (max-width: 900px) {
+    padding: 10px;
+  }
+  @include media-md {
+    .property__text h3 {
+      font-size: 25px;
+    }
+    #{&}__highlight {
+      flex-flow: column-reverse;
+      .property__details {
+        padding: 5px;
+      }
+    }
+    #{&}__actions {
+      flex: initial;
+      .action_wrapper {
+        width: 70%;
+        flex-flow: row;
+        min-height: 40px;
+        padding: 5px;
+        margin: 5px auto;
+        @include media-sm {
+          flex-wrap: wrap;
+        }
+      }
+    }
+  }
+  @include media-sm-md {
+    #{&}__actions {
+      .action_wrapper {
+        width: 100%;
+      }
+    }
+  }
+}
+.gravater {
+  width: 40px;
+  height: 40px;
+}
+.divider {
+  width: 100%;
+  height: 2px;
+  background-color: $borders_and_disabled;
+}
+
+.add_property {
+  section {
+    min-height: 300px;
+    background: #fdfdfd;
+    margin-top: 30px;
+    border-radius: 40px;
+    flex-wrap: wrap;
+    padding: 20px;
+    width: 100%;
+  }
+  .texta{
+     background:rgb(247, 247, 250);
+    border:none;
+    padding: 15px;
+    font-size: 14px;
+
+  }
+  section > * {
+    margin: 20px;
+    input:not([type="text"]):not([class*="input-error"]) {
+      border: none !important;
+    }
+  }
+
+  .action {
+    @include flex-center;
+  }
+
+  @include media-sm-md {
+    h2 {
+      font-size: 20px;
+    }
+    section {
+      padding: 50px 10px;
+      & > * {
+        margin: 0px;
+      }
+    }
+    .dropdownWrapper {
+      width: 40%;
+      margin: 10px 10px 10px 0px;
+    }
+    .form-control {
+      width: 90%;
+    }
+    .form-control.number {
+      width: 20%;
+      margin: 10px 10px 10px 0px;
+    }
+    .form-group {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+  @media (max-width: 289px) {
+    section > * {
+      width: 90% !important;
+    }
+  }
+}
+
+.property-error {
+  position: fixed;
+  width: 100%;
+  background: red;
+  top: -70px;
+  left: 0;
+  right: 0;
+  transition: all 0.5s;
+  z-index: 50;
+  height: 40px;
+  font-size: 15px;
+  padding: 10px;
+  p {
+    color: #fff !important;
+  }
+  &.success {
+    background: blue;
+  }
+  &.show {
+    top: 70px;
+  }
+}

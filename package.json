@@ -5,9 +5,11 @@
   "main": "server.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production node dist/server.js",
-    "dev": "cross-env NODE_ENV=development nodemon --exec babel-node --experimental-modules src/server.js",
-    "test-build": "npm run build && npm start",
-    "build": "rm -rf build && babel src --out-dir dist"
+    "dev": "cross-env NODE_ENV=development nodemon --exec babel-node src/server.js",
+    "test-build": "yarn build && yarn start",
+    "build": "yarn build-server && yarn build-client",
+    "build-server": "rm -rf build && babel src --out-dir dist",
+    "build-client": "cd client && yarn install && yarn build"
   },
   "repository": {
     "type": "git",

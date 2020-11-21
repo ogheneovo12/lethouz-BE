@@ -1,0 +1,30 @@
+.icon-list li {
+  display: flex;
+  margin: 30px 0;
+  align-items: center;
+
+  .icon {
+    width: 45px;
+    font-size: 30px;
+    color: $secondary-color;
+  }
+  span {
+    display: block;
+    margin-left: 30px;
+  }
+}
+
+.icon-box {
+  display: inline-block;
+  min-width: 50px;
+  height: 50px;
+  padding: 5px 10px;
+  text-align: center;
+  background: #c4c4c4;
+  margin: 10px 10px 0 0;
+  border-radius: 10px;
+  font-size: 12px;
+  i {
+    font-size: 20px;
+  }
+}

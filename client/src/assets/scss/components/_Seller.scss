@@ -1,0 +1,18 @@
+.seller {
+  display: flex;
+  align-items: center;
+  #{&}__info {
+    margin-left: 1rem;
+  }
+  #{&}__rating {
+    color: #ffd700;
+  }
+  #{&}__name {
+    small {
+      color: blue;
+      &.unverified {
+        background: $warning;
+      }
+    }
+  }
+}

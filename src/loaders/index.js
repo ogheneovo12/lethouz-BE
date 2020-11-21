@@ -5,6 +5,8 @@ import passportLoader from "./passport.loader";
 import * as config from "../config";
 const app = express();
 
+app.express = express;
+
 /**
  * @desc Loads all resources needed for the full funtioning of the app
  * Loads Db connection
