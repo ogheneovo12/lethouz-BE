@@ -10,6 +10,7 @@ export function verifyForeignUser(req, res, next) {
 
 export async function verifyUser(req, res, next) {
   const { user, passport } = req.session;
+  console.log(req.url, user, passport);
   if (!user && !passport)
     return next({
       status: 401,
