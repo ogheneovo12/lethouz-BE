@@ -18,7 +18,19 @@ const MongoStore = connectStore(session);
 export default function loadRoutes(app, c) {
   return new Promise((resolve, reject) => {
     // cors and body parser setup
-    app.use(cors());
+    app.use(
+      cors({
+        credentials: true,
+        origin: (origin, callback) => {
+          if ("http://localhost:3000" == origin) {
+            callback(null, true);
+          } else {
+            callback(new Error("Not Allowed by CORS"));
+          }
+        },
+      })
+    );
+
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
