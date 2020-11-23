@@ -3,6 +3,7 @@ import session from "express-session";
 import passport from "passport";
 import connectStore from "connect-mongo";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import apiRoutes from "../routes";
 import * as config from "../config";
@@ -33,7 +34,6 @@ export default function loadRoutes(app, c) {
 
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
-
     // serve static files for react app
     app.use(app.express.static(join(process.cwd(), "client/build")));
 
@@ -55,6 +55,8 @@ export default function loadRoutes(app, c) {
         }),
       })
     );
+    app.use(cookieParser());
+    //app.use((req, res, next) => console.log(req.session, req.cookies));
 
     app.use(passport.initialize());
     app.use(passport.session());
