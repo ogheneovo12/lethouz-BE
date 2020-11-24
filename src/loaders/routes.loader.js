@@ -19,10 +19,16 @@ const MongoStore = connectStore(session);
 export default function loadRoutes(app, c) {
   return new Promise((resolve, reject) => {
     // cors and body parser setup
+
+    // for frontend build version serving
+    //app.use(cors());
+
+    // for front end dev version serving
     app.use(
       cors({
         credentials: true,
         origin: (origin, callback) => {
+          console.log(origin);
           if ("http://localhost:3000" == origin) {
             callback(null, true);
           } else {
@@ -48,6 +54,7 @@ export default function loadRoutes(app, c) {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           maxAge: 1000 * 60 * 60 * 24, // set to 24 hours
+          sameSite: false,
         },
         store: new MongoStore({
           mongooseConnection: mongoose.connection,
