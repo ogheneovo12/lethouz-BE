@@ -1,4 +1,4 @@
-## LETHOUZ BACKEND REPOSITORY
+## LETHOUZ
 
 Development URL: https://lethouz.herokuapp.com
 
@@ -7,7 +7,7 @@ Development URL: https://lethouz.herokuapp.com
 ###### Install dependencies for server
 
 ```
-yarn install
+$ yarn install
 ```
 
 <br>
@@ -15,7 +15,7 @@ yarn install
 ###### Install dependecies for client
 
 ```
-cd client && yarn install && cd ..
+$ cd client && yarn install && cd ..
 ```
 
 <br>
@@ -23,7 +23,7 @@ cd client && yarn install && cd ..
 ###### Create a .env file and add your credentials
 
 ```
-cp .env.example .env
+$ cp .env.example .env
 ```
 
 <br>
@@ -31,5 +31,5 @@ cp .env.example .env
 ###### run dev script from root directory
 
 ```
-yarn dev
+$ yarn dev
 ```
