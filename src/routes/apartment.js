@@ -19,7 +19,7 @@ apartmentRouter.post(
   verifySeller,
   ApartmentController.create
 ); //done
-apartmentRouter.get("/", searchQueryBuilder, ApartmentController.search);
+apartmentRouter.get("/", searchQueryBuilder, ApartmentController.search); //done
 apartmentRouter.get("/featured", ApartmentController.getAll); //done
 apartmentRouter.get("/:id", ApartmentController.findOne); //done
 apartmentRouter.put(
@@ -27,5 +27,5 @@ apartmentRouter.put(
   verifyUser,
   updateApartmentValidator,
   ApartmentController.update
-); //need final testing
+); //done
 export default apartmentRouter;

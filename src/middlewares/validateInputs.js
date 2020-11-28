@@ -209,6 +209,9 @@ const updateApartmentSchema = joi.object().keys({
     country: joi.string(),
   }),
   attachments: joi.array(),
+  published:joi.bool(),
+  draft:joi.number(),
+  sold:joi.bool()
 });
 
 export async function updateApartmentValidator(req, res, next) {

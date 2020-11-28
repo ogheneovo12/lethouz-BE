@@ -18,6 +18,9 @@ const DetailsSchema = new Schema({
     required: true,
   },
 });
+DetailsSchema.set("toJSON",{
+  transform:(_,{_id,...rest})=>rest
+})
 
 const AddressSchema = new Schema({
   state: {
@@ -33,6 +36,10 @@ const AddressSchema = new Schema({
     required: true,
   },
 });
+
+AddressSchema.set("toJSON",{
+  transform:(_,{_id,...rest})=>rest
+})
 
 const GeoSchema = new Schema({
   type: {
@@ -112,7 +119,12 @@ const ApartmentSchema = new Schema(
   }
 );
 
+
 ApartmentSchema.index({
   "geometry.coordinates": "2dsphere",
 });
+ApartmentSchema.set('toJSON', {
+  transform: (doc, { __v, ...rest }) =>rest  
+})
+
 export default model("Apartment", ApartmentSchema);

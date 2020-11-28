@@ -12,7 +12,7 @@ const userRouter = Router();
 userRouter.get("/", verifyUser, UsersController.showUser); //done
 
 //update profile
-userRouter.put("/", verifyUser, updateProfileValidator, UsersController.update); //nil //no ui
+userRouter.put("/", verifyUser, updateProfileValidator, UsersController.update); //user image
 
 //reset password
 userRouter.put(
@@ -32,9 +32,9 @@ userRouter.put("/saved", verifyUser, UsersController.toggleSaved); //done
 userRouter.get("/apartment", verifyUser, UsersController.getApartments); //done
 
 // get user details for guests
-userRouter.get("/:username", UsersController.findOne);
+userRouter.get("/:username", UsersController.findOne); //done
 
 // get user aoartments for guests
-userRouter.get("/:username/apartment", UsersController.getUserApartments);
+userRouter.get("/:username/apartment", UsersController.getUserApartments); //done
 
 export default userRouter;
