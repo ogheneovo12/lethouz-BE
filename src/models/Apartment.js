@@ -68,6 +68,10 @@ const ApartmentSchema = new Schema(
       type: String,
       required: true,
     },
+    draft: {
+      type: Number,
+      default: 0,
+    },
     address: {
       type: AddressSchema,
       required: true,

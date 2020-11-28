@@ -154,13 +154,6 @@ export async function createApartmentValidator(req, res, next) {
   }
 }
 
-function sanitize(data) {
-  for (const prop in data) {
-    data[prop] = validator.escape(data[prop]);
-  }
-  return data;
-}
-
 export function passwordResetValidator(req, res, next) {
   const data = {};
   data.currentPassword = req.body.currentPassword
@@ -182,4 +175,62 @@ export function passwordResetValidator(req, res, next) {
   }
   req.body = sanitize(data);
   next();
+}
+
+const updateApartmentSchema = joi.object().keys({
+  title: joi.string(),
+  type: joi
+    .string()
+    .required()
+    .valid(
+      ...[
+        ...types["coworking space"],
+        ...types.house,
+        ...types.commercial,
+        ...types.land,
+        ...types.apartment,
+      ]
+    ),
+  price: joi.number(),
+  purpose: joi.string().valid(),
+  currency: joi.string(),
+  currentState: joi.string().valid("new", "furnished", "serviced"),
+  description: joi.string(),
+  details: joi.object().keys({
+    bathrooms: joi.number(),
+    toilets: joi.number(),
+    bedrooms: joi.number(),
+    size: joi.number(),
+  }),
+  address: joi.object().keys({
+    address: joi.string(),
+    state: joi.string(),
+    lga: joi.string(),
+    country: joi.string(),
+  }),
+  attachments: joi.array(),
+});
+
+export async function updateApartmentValidator(req, res, next) {
+  try {
+    req.body = await updateApartmentSchema.validateAsync(req.body, {
+      abortEarly: false,
+    });
+    req.body.geometry = {};
+    next();
+  } catch (err) {
+    const errors = formatJoiError(err);
+    next({
+      status: 400,
+      errors,
+      message: "validation failed",
+    });
+  }
+}
+
+function sanitize(data) {
+  for (const prop in data) {
+    data[prop] = validator.escape(data[prop]);
+  }
+  return data;
 }
